@@ -16,8 +16,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 private:
     Ui::MainWindow *ui;
+    void setupMenuBar();
+private slots:
+    void openConfig();
 };
 #endif // MAINWINDOW_H
