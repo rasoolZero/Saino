@@ -6,6 +6,8 @@ SerialController::SerialController(QObject *parent)
     : QObject{parent}
     , port{QSharedPointer<QSerialPort>::create(this)}
 {
+    QObject::connect(port.get(),&QSerialPort::readyRead,this,&SerialController::dataReady);
+
 }
 
 SerialController &SerialController::getInstance()
@@ -17,11 +19,11 @@ SerialController &SerialController::getInstance()
 
 bool SerialController::connect()
 {
+    auto& manager = SerialManager::getInstance();
     if(manager.getPort() == ""){
         EmptyPortName().raise();
     }
     port->close();
-    auto& manager = SerialManager::getInstance();
     port->setBaudRate(manager.getRate());
     port->setPortName(manager.getPort());
     port->setParity(manager.getParity());
@@ -38,6 +40,12 @@ void SerialController::disconnect()
 QString SerialController::error()
 {
     return port->errorString();
+}
+
+void SerialController::dataReady()
+{
+    if(port->isOpen())
+        emit dataRecieved(port->readAll());
 }
 
 QSharedPointer<SerialController> SerialController::instance;

@@ -18,7 +18,7 @@ public:
     }
     QException *clone() const override
     {
-        return new MyException(*this);
+        return new EmptyPortName(*this);
     }
 };
 
@@ -38,7 +38,11 @@ public:
     bool connect();
     void disconnect();
     QString error();
+
+public slots:
+    void dataReady();
 signals:
+    void dataRecieved(QByteArray data);
 };
 
 #endif // SERIALCONTROLLER_H

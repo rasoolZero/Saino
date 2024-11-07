@@ -21,5 +21,7 @@ private:
     void setupMenuBar();
 private slots:
     void openConfig();
+    void startSerial();
+    void stopSerial();
 };
 #endif // MAINWINDOW_H
