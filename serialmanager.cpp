@@ -37,6 +37,11 @@ void SerialManager::setRate(qint32 newRate)
     rate = newRate;
 }
 
+QString SerialManager::getPort() const
+{
+    return port;
+}
+
 SerialManager::SerialManager(QObject *parent)
     : QObject{parent}
 {

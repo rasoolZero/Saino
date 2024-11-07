@@ -9,37 +9,46 @@
 
 class SerialManager : public QObject
 {
+public:
+
+    using Parity = QSerialPort::Parity;
+    using StopBits = QSerialPort::StopBits;
+    using BaudRate = QSerialPort::BaudRate;
+private:
     Q_OBJECT
 
-    QSerialPort::Parity parity = QSerialPort::Parity::OddParity;
-    QSerialPort::StopBits stopbit = QSerialPort::StopBits::OneStop;
-    qint32 rate = QSerialPort::Baud115200;
+    Parity parity = Parity::OddParity;
+    StopBits stopbit = StopBits::OneStop;
+    qint32 rate = BaudRate::Baud115200;
     QString port;
 
     static QSharedPointer<SerialManager> instance;
-    static QList<QSerialPort::Parity> parities;
-    static QList<QSerialPort::StopBits> stopbits;
+    static QList<Parity> parities;
+    static QList<StopBits> stopbits;
     explicit SerialManager(QObject *parent = nullptr);
     SerialManager(const SerialManager &) = delete;
 
 public:
+
     static SerialManager& getInstance();
     static QList<QSerialPortInfo> getPorts();
     static QList<qint32> getBaudRates();
-    static const QList<QSerialPort::Parity>& getParities();
-    static const QList<QSerialPort::StopBits>& getStopbits();
+    static const QList<Parity>& getParities();
+    static const QList<StopBits>& getStopbits();
 
 
-    QSerialPort::Parity getParity() const;
-    void setParity(const QSerialPort::Parity &newParity);
+    Parity getParity() const;
+    void setParity(const Parity &newParity);
 
     void setPort(const QString &newPort);
 
-    QSerialPort::StopBits getStopbit() const;
-    void setStopbit(const QSerialPort::StopBits &newStopbit);
+    StopBits getStopbit() const;
+    void setStopbit(const StopBits &newStopbit);
 
     qint32 getRate() const;
     void setRate(qint32 newRate);
+
+    QString getPort() const;
 
 signals:
 

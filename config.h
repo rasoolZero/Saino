@@ -15,6 +15,9 @@ public:
     explicit Config(QWidget *parent = nullptr);
     ~Config();
 
+private slots:
+    void on_buttonBox_accepted();
+
 private:
     Ui::Config *ui;
 };
