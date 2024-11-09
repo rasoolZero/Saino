@@ -12,12 +12,16 @@ SOURCES += \
     config.cpp \
     main.cpp \
     mainwindow.cpp \
+    packet.cpp \
+    parser.cpp \
     serialcontroller.cpp \
     serialmanager.cpp
 
 HEADERS += \
     config.h \
     mainwindow.h \
+    packet.h \
+    parser.h \
     serialcontroller.h \
     serialmanager.h
 

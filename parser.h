@@ -1,0 +1,27 @@
+#ifndef PARSER_H
+#define PARSER_H
+
+#include <QObject>
+#include <QSharedPointer>
+#include "packet.h"
+
+class Parser : public QObject
+{
+    Q_OBJECT
+
+    static QSharedPointer<Parser> instance;
+    explicit Parser(QObject *parent = nullptr);
+    Parser(const Parser &other) = delete;
+    Parser& operator=(const Parser &other) = delete;
+
+    msgcounter_t msgCounter = 0;
+
+    QByteArray totalBytes;
+public:
+    static Parser& getInstance();
+
+public slots:
+    void parseData(QByteArray data);
+signals:
+};
+#endif // PARSER_H

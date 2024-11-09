@@ -1,13 +1,14 @@
 #include "serialcontroller.h"
 #include "serialmanager.h"
-#include "QException"
+#include <QException>
+#include "parser.h"
 
 SerialController::SerialController(QObject *parent)
     : QObject{parent}
     , port{QSharedPointer<QSerialPort>::create(this)}
 {
     QObject::connect(port.get(),&QSerialPort::readyRead,this,&SerialController::dataReady);
-
+    QObject::connect(this,&SerialController::dataRecieved,&Parser::getInstance(),&Parser::parseData);
 }
 
 SerialController &SerialController::getInstance()
