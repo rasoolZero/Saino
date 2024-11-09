@@ -33,13 +33,19 @@ T byteArrayConvert(const QByteArray &bytes)
 typedef quint8 idnumber_t;
 typedef quint16 checksum_t;
 typedef quint8 msgcounter_t;
+typedef quint32 data_t;
+typedef quint32 factor_t;
+typedef quint8 id_t;
+typedef qint8 reserve_t;
 
 class PacketData{
-    quint32 data;
-    quint32 factor;
-    quint8 id;
-    qint8 reserve;
-    public:
+    data_t data;
+    factor_t factor;
+    id_t id;
+    reserve_t reserve;
+public:
+    PacketData(data_t data, factor_t factor, id_t id, reserve_t reserve);
+
     static qsizetype dataSize();
 };
 
@@ -53,6 +59,8 @@ public:
     Packet(const QByteArray& bytes);
 private:
     checksum_t calculateChecksum(const QByteArray & bytes);
+    void evaluatePacketData(const QByteArray& bytes);
+
     msgcounter_t msgCounter;
     idnumber_t idN;
     QList<PacketData> allPacketData;

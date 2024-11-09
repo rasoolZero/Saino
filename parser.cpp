@@ -20,8 +20,6 @@ void Parser::parseData(QByteArray data)
 
     totalBytes+=data;
     qDebug() << "total bytes:" << totalBytes;
-    qDebug() << totalBytes.size();
-    qDebug() << minimumSize;
     if(totalBytes.size() < minimumSize)
         return;
 
