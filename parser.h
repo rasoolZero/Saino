@@ -23,5 +23,6 @@ public:
 public slots:
     void parseData(QByteArray data);
 signals:
+    void packetGenerated(Packet packet);
 };
 #endif // PARSER_H

@@ -1,4 +1,5 @@
 #include "packet.h"
+#include "datastorage.h"
 #include <QDebug>
 
 
@@ -33,6 +34,28 @@ void Packet::evaluatePacketData(const QByteArray &bytes)
     }
 }
 
+void Packet::removeBadData()
+{
+    const auto& dataInfo = DataStorage::getInstance().getInfo();
+    QList<PacketData>::iterator it = allPacketData.begin();
+    while (it != allPacketData.end()) {
+        qreal min = static_cast<qreal>(dataInfo[it->getId()].minValue);
+        qreal max = static_cast<qreal>(dataInfo[it->getId()].maxValue);
+        qreal value = it->getValue();
+        if (value < min || value > max){
+            it = allPacketData.erase(it);
+            --this->idN;
+        }
+        else
+            ++it;
+    }
+}
+
+const QList<PacketData> &Packet::getAllPackets()
+{
+    return this->allPacketData;
+}
+
 Packet::Packet(const QByteArray &bytes)
 {
     auto actualChecksumBytes = bytes.mid(bytes.size()-footer.size()-sizeof(checksum_t),sizeof(checksum_t));
@@ -41,6 +64,39 @@ Packet::Packet(const QByteArray &bytes)
     if(actualChecksum != calculatedChecksum)
         BadChecksum().raise();
     evaluatePacketData(bytes);
+    removeBadData();
+    if(idN == 0 || this->allPacketData.size() == 0)
+        EmptyPacket().raise();
+}
+
+data_t PacketData::getData() const
+{
+    return data;
+}
+
+factor_t PacketData::getFactor() const
+{
+    return factor;
+}
+
+id_t PacketData::getId() const
+{
+    return id;
+}
+
+reserve_t PacketData::getReserve() const
+{
+    return reserve;
+}
+
+qreal PacketData::getValue() const
+{
+    return value;
+}
+
+bool PacketData::operator==(id_t id)
+{
+    return this->id == id;
 }
 
 PacketData::PacketData(data_t data, factor_t factor, id_t id, reserve_t reserve) : data(std::move(data)),
@@ -53,4 +109,7 @@ PacketData::PacketData(data_t data, factor_t factor, id_t id, reserve_t reserve)
     qDebug() << "factor:" << factor;
     qDebug() << "id:" << id;
     qDebug() << "reserve:" << reserve;
+    if(factor == 0)
+        factor = 1;
+    value = static_cast<qreal>(data)/static_cast<qreal>(factor);
 }

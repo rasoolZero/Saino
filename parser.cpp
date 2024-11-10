@@ -1,8 +1,11 @@
 #include "parser.h"
 #include "packet.h"
+#include "datastorage.h"
 #include <QDebug>
 
+
 QSharedPointer<Parser> Parser::instance = nullptr;
+
 
 Parser& Parser::getInstance()
 {
@@ -39,11 +42,16 @@ void Parser::parseData(QByteArray data)
 
                 try{
                     Packet packet(packetData);
+                    emit packetGenerated(packet);
                     totalBytes.remove(0, footerIndex + 1);
                     msgCounter++;
                 }
                 catch(const BadChecksum &){
-                    qDebug() << "Bad Checksum" << totalBytes;
+                    qDebug() << "Bad Checksum";
+                }
+
+                catch(const EmptyPacket &){
+                    qDebug() << "Empty Packet";
                 }
                 qDebug() << "total bytes:" << totalBytes;
                 break;
@@ -58,4 +66,5 @@ void Parser::parseData(QByteArray data)
 Parser::Parser(QObject *parent)
     : QObject(parent)
 {
+    connect(this,&Parser::packetGenerated,&DataStorage::getInstance(),&DataStorage::newPacket);
 }

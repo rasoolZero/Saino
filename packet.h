@@ -4,8 +4,6 @@
 #include <QException>
 
 class BadChecksum : public QException{
-
-
     // QException interface
 public:
     void raise() const override
@@ -15,6 +13,20 @@ public:
     QException *clone() const override
     {
         return new BadChecksum(*this);
+    }
+};
+
+
+class EmptyPacket : public QException{
+    // QException interface
+public:
+    void raise() const override
+    {
+        throw *this;
+    }
+    QException *clone() const override
+    {
+        return new EmptyPacket(*this);
     }
 };
 
@@ -43,10 +55,20 @@ class PacketData{
     factor_t factor;
     id_t id;
     reserve_t reserve;
+    qreal value;
+
 public:
     PacketData(data_t data, factor_t factor, id_t id, reserve_t reserve);
 
     static qsizetype dataSize();
+    data_t getData() const;
+    factor_t getFactor() const;
+    id_t getId() const;
+    reserve_t getReserve() const;
+    qreal getValue() const;
+
+    bool operator==(id_t id);
+
 };
 
 class Packet
@@ -57,14 +79,15 @@ public:
     inline static const qsizetype minimumSize = (header.size() + footer.size() + sizeof(msgcounter_t) + sizeof(idnumber_t) + sizeof(checksum_t) + PacketData::dataSize());
 
     Packet(const QByteArray& bytes);
+    const QList<PacketData> &getAllPackets();
 private:
     checksum_t calculateChecksum(const QByteArray & bytes);
     void evaluatePacketData(const QByteArray& bytes);
+    void removeBadData();
 
     msgcounter_t msgCounter;
     idnumber_t idN;
     QList<PacketData> allPacketData;
-
 };
 
 #endif // PACKET_H
