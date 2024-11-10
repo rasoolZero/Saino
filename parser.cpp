@@ -52,6 +52,8 @@ void Parser::parseData(QByteArray data)
 
                 catch(const EmptyPacket &){
                     qDebug() << "Empty Packet";
+                    totalBytes.remove(0, footerIndex + 1);
+                    msgCounter++;
                 }
                 qDebug() << "total bytes:" << totalBytes;
                 break;

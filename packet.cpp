@@ -104,12 +104,13 @@ PacketData::PacketData(data_t data, factor_t factor, id_t id, reserve_t reserve)
     id(std::move(id)),
     reserve(std::move(reserve))
 {
-    qDebug() << __FUNCTION__;
-    qDebug() << "data:" << data;
-    qDebug() << "factor:" << factor;
-    qDebug() << "id:" << id;
-    qDebug() << "reserve:" << reserve;
     if(factor == 0)
         factor = 1;
     value = static_cast<qreal>(data)/static_cast<qreal>(factor);
+    qDebug() << __FUNCTION__;
+    qDebug() << "id:" << id;
+    qDebug() << "reserve:" << reserve;
+    qDebug() << "data:" << data;
+    qDebug() << "factor:" << factor;
+    qDebug() << "VALUE:" << value;
 }
