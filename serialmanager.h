@@ -27,6 +27,7 @@ private:
     static QList<StopBits> stopbits;
     explicit SerialManager(QObject *parent = nullptr);
     SerialManager(const SerialManager &) = delete;
+    SerialManager& operator=(const SerialManager &other) = delete;
 
 public:
 

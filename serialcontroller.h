@@ -32,6 +32,8 @@ class SerialController : public QObject
     static QSharedPointer<SerialController> instance;
     explicit SerialController(QObject *parent = nullptr);
     SerialController(const SerialController& other) = delete;
+    SerialController& operator=(const SerialController &other) = delete;
+
 public:
     static SerialController& getInstance();
 
