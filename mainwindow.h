@@ -19,6 +19,7 @@ public:
 private:
     Ui::MainWindow *ui;
     void setupMenuBar();
+    void setupGauge();
 private slots:
     void openConfig();
     void startSerial();
