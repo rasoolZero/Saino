@@ -15,6 +15,7 @@ SOURCES += \
     mainwindow.cpp \
     packet.cpp \
     parser.cpp \
+    qcgaugewidget.cpp \
     serialcontroller.cpp \
     serialmanager.cpp
 
@@ -24,6 +25,7 @@ HEADERS += \
     mainwindow.h \
     packet.h \
     parser.h \
+    qcgaugewidget.h \
     serialcontroller.h \
     serialmanager.h
 
