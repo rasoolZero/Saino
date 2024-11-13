@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     config.cpp \
     datastorage.cpp \
+    led.cpp \
     main.cpp \
     mainwindow.cpp \
     packet.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 HEADERS += \
     config.h \
     datastorage.h \
+    led.h \
     mainwindow.h \
     packet.h \
     parser.h \
