@@ -27,34 +27,35 @@ DataStorage::DataStorage(QObject *parent)
 
 void DataStorage::populateInfo()
 {
-    allInfo[0x01] = {false, "OIL PRESSURE", 0, 1000};
-    allInfo[0x02] = {false, "OIL TEMPERATURE", 0, 400};
-    allInfo[0x03] = {false, "FUEL FLOW", 0, 800};
-    allInfo[0x04] = {false, "FUEL", 0, 800};
-    allInfo[0x05] = {false, "EGT", 0, 400};
-    allInfo[0x06] = {false, "TORQUE", 0, 400};
-    allInfo[0x07] = {false, "INDICATED POWER", 0, 400};
-    allInfo[0x08] = {false, "Frictional Power", 0, 400};
-    allInfo[0x09] = {false, "Thermal efficiency", 0, 100};
-    allInfo[0x0A] = {false, "Air-Fuel ratio", 0, 20};
-    allInfo[0x0B] = {false, "MOTOR SPEED", 0, 1000};
-    allInfo[0x0C] = {false, "OUTPUT AIR SPEED", 0, 1000};
-    allInfo[0x0D] = {false, "VIBRATION", 0, 100};
-    allInfo[0x0E] = {false, "BODY TEMP", 0, 400};
-    allInfo[0x0F] = {false, "AIR TEMP", 0, 400};
-    allInfo[0x11] = {true, "OIL PRESSURE SENSOR ERROR", 0, 1};
-    allInfo[0x12] = {true, "OIL TEMPERATURE SENSOR ERROR", 0, 1};
-    allInfo[0x13] = {true, "FUEL FLOW SENSOR ERROR", 0, 1};
-    allInfo[0x14] = {true, "FUEL SENSOR ERROR", 0, 1};
-    allInfo[0x15] = {true, "EGT SENSOR ERROR", 0, 1};
-    allInfo[0x16] = {true, "TORQUE SENSOR ERROR", 0, 1};
-    allInfo[0x17] = {true, "INDICATED POWER SENSOR ERROR", 0, 1};
-    allInfo[0x18] = {true, "Frictional Power SENSOR ERROR", 0, 1};
-    allInfo[0x19] = {true, "Thermal efficiency SENSOR ERROR", 0, 1};
-    allInfo[0x1A] = {true, "Air-Fuel ratio SENSOR ERROR", 0, 1};
-    allInfo[0x1B] = {true, "MOTOR SPEED SENSOR ERROR", 0, 1};
-    allInfo[0x1C] = {true, "OUTPUT AIR SPEED SENSOR ERROR", 0, 1};
-    allInfo[0x1D] = {true, "VIBRATION SENSOR ERROR", 0, 1};
-    allInfo[0x1E] = {true, "BODY TEMP SENSOR ERROR", 0, 1};
-    allInfo[0x1F] = {true, "AIR TEMP SENSOR ERROR", 0, 1};
+        allInfo[OIL_PRESSURE] = {false, "OIL PRESSURE", 0, 1000};
+        allInfo[OIL_TEMPERATURE] = {false, "OIL TEMPERATURE", 0, 400};
+        allInfo[FUEL_FLOW] = {false, "FUEL FLOW", 0, 800};
+        allInfo[FUEL] = {false, "FUEL", 0, 800};
+        allInfo[EGT] = {false, "EGT", 0, 400};
+        allInfo[TORQUE] = {false, "TORQUE", 0, 400};
+        allInfo[INDICATED_POWER] = {false, "INDICATED POWER", 0, 400};
+        allInfo[FRICTIONAL_POWER] = {false, "Frictional Power", 0, 400};
+        allInfo[THERMAL_EFFICIENCY] = {false, "Thermal efficiency", 0, 100};
+        allInfo[AIR_FUEL_RATIO] = {false, "Air-Fuel ratio", 0, 20};
+        allInfo[MOTOR_SPEED] = {false, "MOTOR SPEED", 0, 1000};
+        allInfo[OUTPUT_AIR_SPEED] = {false, "OUTPUT AIR SPEED", 0, 1000};
+        allInfo[VIBRATION] = {false, "VIBRATION", 0, 100};
+        allInfo[BODY_TEMP] = {false, "BODY TEMP", 0, 400};
+        allInfo[AIR_TEMP] = {false, "AIR TEMP", 0, 400};
+
+        allInfo[OIL_PRESSURE_SENSOR_ERROR] = {true, "OIL PRESSURE SENSOR ERROR", 0, 1};
+        allInfo[OIL_TEMPERATURE_SENSOR_ERROR] = {true, "OIL TEMPERATURE SENSOR ERROR", 0, 1};
+        allInfo[FUEL_FLOW_SENSOR_ERROR] = {true, "FUEL FLOW SENSOR ERROR", 0, 1};
+        allInfo[FUEL_SENSOR_ERROR] = {true, "FUEL SENSOR ERROR", 0, 1};
+        allInfo[EGT_SENSOR_ERROR] = {true, "EGT SENSOR ERROR", 0, 1};
+        allInfo[TORQUE_SENSOR_ERROR] = {true, "TORQUE SENSOR ERROR", 0, 1};
+        allInfo[INDICATED_POWER_SENSOR_ERROR] = {true, "INDICATED POWER SENSOR ERROR", 0, 1};
+        allInfo[FRICTIONAL_POWER_SENSOR_ERROR] = {true, "Frictional Power SENSOR ERROR", 0, 1};
+        allInfo[THERMAL_EFFICIENCY_SENSOR_ERROR] = {true, "Thermal efficiency SENSOR ERROR", 0, 1};
+        allInfo[AIR_FUEL_RATIO_SENSOR_ERROR] = {true, "Air-Fuel ratio SENSOR ERROR", 0, 1};
+        allInfo[MOTOR_SPEED_SENSOR_ERROR] = {true, "MOTOR SPEED SENSOR ERROR", 0, 1};
+        allInfo[OUTPUT_AIR_SPEED_SENSOR_ERROR] = {true, "OUTPUT AIR SPEED SENSOR ERROR", 0, 1};
+        allInfo[VIBRATION_SENSOR_ERROR] = {true, "VIBRATION SENSOR ERROR", 0, 1};
+        allInfo[BODY_TEMP_SENSOR_ERROR] = {true, "BODY TEMP SENSOR ERROR", 0, 1};
+        allInfo[AIR_TEMP_SENSOR_ERROR] = {true, "AIR TEMP SENSOR ERROR", 0, 1};
 }
