@@ -33,7 +33,7 @@ void LED::setState(State state)
 
 void LED::setState(bool state)
 {
-    setState(state ? StateOk : StateError);
+    setState(state ? StateError : StateOk);
 }
 
 void LED::resizeEvent(QResizeEvent *event)
