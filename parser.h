@@ -19,6 +19,7 @@ class Parser : public QObject
     QByteArray totalBytes;
 public:
     static Parser& getInstance();
+    void reset();
 
 public slots:
     void parseData(QByteArray data);

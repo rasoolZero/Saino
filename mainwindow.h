@@ -30,6 +30,7 @@ private:
     void setupTables();
     void updateDetailTables(Packet& packet);
     void updateMainIndicators(Packet& packet);
+    void resetUI();
     QMap<int,QcItem*> gaugeLabels;
     QMap<int,QcItem*> gaugeNeedles;
     const QVector<ids> gaugeIDs = {ids::OIL_PRESSURE,ids::OIL_TEMPERATURE,ids::FUEL,ids::TORQUE,ids::MOTOR_SPEED};

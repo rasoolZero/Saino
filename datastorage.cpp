@@ -30,6 +30,11 @@ QVector<DataStorage::DataID> DataStorage::allDataCodes() const
     return result;
 }
 
+void DataStorage::reset()
+{
+    this->packets.clear();
+}
+
 void DataStorage::newPacket(Packet packet)
 {
     packets.push_back(packet);

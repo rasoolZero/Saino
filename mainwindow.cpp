@@ -30,20 +30,9 @@ void MainWindow::newPacket(Packet packet)
 
 void MainWindow::setupMenuBar()
 {
-    QMenuBar *menuBar = new QMenuBar(this);
-    QMenu *projectMenu = new QMenu("Project", menuBar);
-    QAction *openConfig = new QAction("Open Config", projectMenu);
-    QAction *start = new QAction("Start", projectMenu);
-    QAction *stop = new QAction("Stop", projectMenu);
-    connect(openConfig, &QAction::triggered, this, &MainWindow::openConfig);
-    connect(start, &QAction::triggered, this, &MainWindow::startSerial);
-    connect(stop, &QAction::triggered, this, &MainWindow::stopSerial);
-    projectMenu->addAction(openConfig);
-    projectMenu->addSeparator();
-    projectMenu->addAction(start);
-    projectMenu->addAction(stop);
-    menuBar->addMenu(projectMenu);
-    this->setMenuBar(menuBar);
+    connect(this->ui->actionOpen_Config, &QAction::triggered, this, &MainWindow::openConfig);
+    connect(this->ui->actionStart, &QAction::triggered, this, &MainWindow::startSerial);
+    connect(this->ui->actionStop, &QAction::triggered, this, &MainWindow::stopSerial);
 }
 
 void MainWindow::setupGauge()
@@ -155,6 +144,24 @@ void MainWindow::updateMainIndicators(Packet &packet)
     }
 }
 
+void MainWindow::resetUI()
+{
+    for(int i=0;i<this->ui->tblError->rowCount();i++)
+        this->ui->tblError->item(i,1)->setText("NaN");
+    for(int i=0;i<this->ui->tblValue->rowCount();i++)
+        this->ui->tblValue->item(i,1)->setText("NaN");
+    foreach(auto ptr,this->gaugeLabels){
+        QcLabelItem* label = dynamic_cast<QcLabelItem*>(ptr);
+        label->setText("0");
+    }
+    foreach(auto ptr,this->gaugeNeedles){
+        QcNeedleItem* needle = dynamic_cast<QcNeedleItem*>(ptr);
+        needle->setCurrentValue(0);
+    }
+    this->ui->ledAll->setState(false);
+    this->ui->ledLast->setState(false);
+}
+
 void MainWindow::openConfig()
 {
     Config* config = new Config(this);
@@ -163,6 +170,9 @@ void MainWindow::openConfig()
 
 void MainWindow::startSerial()
 {
+    DataStorage::getInstance().reset();
+    Parser::getInstance().reset();
+    resetUI();
     bool result;
     try{
         result = SerialController::getInstance().connect();
@@ -172,6 +182,8 @@ void MainWindow::startSerial()
         return;
     }
     if(result){
+        this->ui->actionOpen_Config->setDisabled(true);
+        this->ui->actionStart->setDisabled(true);
         QMessageBox::information(this,"Success","Serial connection has been opened successfully");
     }
     else{
@@ -181,5 +193,7 @@ void MainWindow::startSerial()
 
 void MainWindow::stopSerial()
 {
+    this->ui->actionOpen_Config->setDisabled(false);
+    this->ui->actionStart->setDisabled(false);
     SerialController::getInstance().disconnect();
 }

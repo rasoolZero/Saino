@@ -14,6 +14,12 @@ Parser& Parser::getInstance()
     return *instance;
 }
 
+void Parser::reset()
+{
+    msgCounter = 0;
+    totalBytes.clear();
+}
+
 void Parser::parseData(QByteArray data)
 {
     qDebug() << __FUNCTION__ << "\n" << data;
