@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setupMenuBar();
     setupGauge();
+    setupTables();
 }
 
 MainWindow::~MainWindow()
@@ -61,6 +62,35 @@ void MainWindow::setupGauge()
         gauge->addNeedle(70)->setValueRange(info[gaugeIDs[i]].minValue,info[gaugeIDs[i]].maxValue);
         i++;
     }
+}
+
+void MainWindow::setupTables()
+{
+    const DataStorage& instance = DataStorage::getInstance();
+    const auto & allInfo = instance.getInfo();
+
+    auto tblError = this->ui->tblError;
+    auto tblValue = this->ui->tblValue;
+
+    auto allErrors = instance.allErrorCodes();
+    tblError->setRowCount(allErrors.size());
+    int i=0;
+    foreach(auto&errorCode,allErrors){
+        tblError->setItem(i,0,new QTableWidgetItem(allInfo[errorCode].name));
+        tblError->setItem(i,1,new QTableWidgetItem("NaN"));
+        ++i;
+    }
+    tblError->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    auto allDataCodes = instance.allDataCodes();
+    tblValue->setRowCount(allDataCodes.size());
+    i=0;
+    foreach(auto&dataCode,allDataCodes){
+        tblValue->setItem(i,0,new QTableWidgetItem(allInfo[dataCode].name));
+        tblValue->setItem(i,1,new QTableWidgetItem("NaN"));
+        ++i;
+    }
+    tblValue->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void MainWindow::openConfig()

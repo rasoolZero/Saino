@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QMap>
+#include <QVector>
 #include "packet.h"
 
 
@@ -63,6 +64,8 @@ public:
 
     static DataStorage& getInstance();
     const infomap & getInfo() const;
+    QVector<DataID> allErrorCodes() const;
+    QVector<DataID> allDataCodes() const;
 public slots:
     void newPacket(Packet packet);
 signals:

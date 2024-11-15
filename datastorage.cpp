@@ -14,6 +14,22 @@ const DataStorage::infomap &DataStorage::getInfo() const
     return this->allInfo;
 }
 
+QVector<DataStorage::DataID> DataStorage::allErrorCodes() const
+{
+    QVector<DataID> result;
+    for(DataID i = DataID::OIL_PRESSURE_SENSOR_ERROR; i<= DataID::AIR_TEMP_SENSOR_ERROR;i=static_cast<DataID>(static_cast<int>(i)+1))
+        result.push_back(i);
+    return result;
+}
+
+QVector<DataStorage::DataID> DataStorage::allDataCodes() const
+{
+    QVector<DataID> result;
+    for(DataID i = DataID::OIL_PRESSURE; i<= DataID::AIR_TEMP;i=static_cast<DataID>(static_cast<int>(i)+1))
+        result.push_back(i);
+    return result;
+}
+
 void DataStorage::newPacket(Packet packet)
 {
     packets.push_back(packet);

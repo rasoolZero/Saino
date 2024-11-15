@@ -20,6 +20,7 @@ private:
     Ui::MainWindow *ui;
     void setupMenuBar();
     void setupGauge();
+    void setupTables();
 private slots:
     void openConfig();
     void startSerial();
