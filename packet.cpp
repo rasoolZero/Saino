@@ -39,10 +39,11 @@ void Packet::removeBadData()
     const auto& dataInfo = DataStorage::getInstance().getInfo();
     QList<PacketData>::iterator it = allPacketData.begin();
     while (it != allPacketData.end()) {
-        qreal min = static_cast<qreal>(dataInfo[it->getId()].minValue);
-        qreal max = static_cast<qreal>(dataInfo[it->getId()].maxValue);
+        auto id = it->getId();
+        qreal min = static_cast<qreal>(dataInfo[id].minValue);
+        qreal max = static_cast<qreal>(dataInfo[id].maxValue);
         qreal value = it->getValue();
-        if (value < min || value > max){
+        if (value < min || value > max || min == max){
             it = allPacketData.erase(it);
             --this->idN;
         }
