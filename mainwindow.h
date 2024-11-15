@@ -5,6 +5,7 @@
 #include "packet.h"
 #include <QMap>
 #include "qcgaugewidget.h"
+#include "datastorage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -15,7 +16,7 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+    using ids = DataStorage::DataID;
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -31,6 +32,7 @@ private:
     void updateMainIndicators(Packet& packet);
     QMap<int,QcItem*> gaugeLabels;
     QMap<int,QcItem*> gaugeNeedles;
+    const QVector<ids> gaugeIDs = {ids::OIL_PRESSURE,ids::OIL_TEMPERATURE,ids::FUEL,ids::TORQUE,ids::MOTOR_SPEED};
 
 private slots:
     void openConfig();

@@ -34,7 +34,7 @@
         <item>
          <layout class="QVBoxLayout" name="vrtlay1">
           <item>
-           <widget class="QcGaugeWidget" name="gaugeOilPressure" native="true">
+           <widget class="QcGaugeWidget" name="gauge1" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -44,7 +44,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QcGaugeWidget" name="gaugeOilTempreture" native="true">
+           <widget class="QcGaugeWidget" name="gauge2" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -58,7 +58,7 @@
         <item>
          <layout class="QVBoxLayout" name="vrtlay2">
           <item>
-           <widget class="QcGaugeWidget" name="gaugeTorque" native="true">
+           <widget class="QcGaugeWidget" name="gauge3" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -68,7 +68,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QcGaugeWidget" name="gaugeFuel" native="true">
+           <widget class="QcGaugeWidget" name="gauge4" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -82,7 +82,7 @@
         <item>
          <layout class="QVBoxLayout" name="vrtlay3">
           <item>
-           <widget class="QcGaugeWidget" name="gaugeMotorSpeed" native="true">
+           <widget class="QcGaugeWidget" name="gauge5" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -93,13 +93,43 @@
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_4">
+            <property name="spacing">
+             <number>10</number>
+            </property>
             <property name="sizeConstraint">
              <enum>QLayout::SetNoConstraint</enum>
             </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <property name="spacing">
+               <number>10</number>
+              </property>
               <property name="sizeConstraint">
                <enum>QLayout::SetNoConstraint</enum>
+              </property>
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
               </property>
               <item>
                <widget class="QLabel" name="lblErrorAll">
@@ -119,10 +149,7 @@
                  <number>2</number>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Error&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;all packets&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Error all packets&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -137,14 +164,35 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                </widget>
               </item>
              </layout>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <property name="spacing">
+               <number>10</number>
+              </property>
               <property name="sizeConstraint">
                <enum>QLayout::SetNoConstraint</enum>
+              </property>
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
               </property>
               <item>
                <widget class="QLabel" name="lblErrorLast">
@@ -164,10 +212,7 @@
                  <number>2</number>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Error&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;last packet&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Error last packet&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -181,6 +226,12 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
                 </property>
                </widget>
               </item>

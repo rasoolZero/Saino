@@ -49,8 +49,7 @@ void MainWindow::setupMenuBar()
 void MainWindow::setupGauge()
 {
     using ids = DataStorage::DataID;
-    QcGaugeWidget* const allGauges[] = {ui->gaugeFuel,ui->gaugeMotorSpeed,ui->gaugeOilPressure,ui->gaugeOilTempreture,ui->gaugeTorque};
-    const ids gaugeIDs[] = {ids::FUEL,ids::MOTOR_SPEED,ids::OIL_PRESSURE,ids::OIL_TEMPERATURE,ids::TORQUE};
+    QcGaugeWidget* const allGauges[] = {ui->gauge1,ui->gauge2,ui->gauge3,ui->gauge4,ui->gauge5};
     auto info = DataStorage::getInstance().getInfo();
     int i=0;
     for(QcGaugeWidget* gauge : allGauges){
@@ -135,9 +134,7 @@ void MainWindow::updateDetailTables(Packet &packet)
 void MainWindow::updateMainIndicators(Packet &packet)
 {
     using ids = DataStorage::DataID;
-    static const QVector<ids> gaugeIDs = {ids::FUEL,ids::MOTOR_SPEED,ids::OIL_PRESSURE,ids::OIL_TEMPERATURE,ids::TORQUE};
     const DataStorage& instance = DataStorage::getInstance();
-    const auto & allInfo = instance.getInfo();
     auto allErrors = instance.allErrorCodes();
     this->ui->ledLast->setState(false);
     foreach(const auto& packetData,packet.getAllPackets()){

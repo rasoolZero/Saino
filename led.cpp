@@ -39,6 +39,7 @@ void LED::setState(bool state)
 void LED::resizeEvent(QResizeEvent *event)
 {
     currentSize = std::min(event->size().height(),event->size().width());
+    this->resize(currentSize,currentSize);
     updateStyle();
 }
 
