@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "packet.h"
+#include <QMap>
+#include "qcgaugewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,11 +19,19 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+public slots:
+    void newPacket(Packet packet);
+
 private:
     Ui::MainWindow *ui;
     void setupMenuBar();
     void setupGauge();
     void setupTables();
+    void updateDetailTables(Packet& packet);
+    void updateMainIndicators(Packet& packet);
+    QMap<int,QcItem*> gaugeLabels;
+    QMap<int,QcItem*> gaugeNeedles;
+
 private slots:
     void openConfig();
     void startSerial();

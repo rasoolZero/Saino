@@ -3,6 +3,7 @@
 #include "config.h"
 #include "serialcontroller.h"
 #include "datastorage.h"
+#include "parser.h"
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -10,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(&Parser::getInstance(),&Parser::packetGenerated,this,&MainWindow::newPacket);
     setupMenuBar();
     setupGauge();
     setupTables();
@@ -18,6 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::newPacket(Packet packet)
+{
+    updateDetailTables(packet);
+    updateMainIndicators(packet);
 }
 
 void MainWindow::setupMenuBar()
@@ -59,7 +67,12 @@ void MainWindow::setupGauge()
         values->setValueRange(info[gaugeIDs[i]].minValue,info[gaugeIDs[i]].maxValue);
         values->setStep((info[gaugeIDs[i]].maxValue - info[gaugeIDs[i]].minValue)/10);
         gauge->addLabel(40)->setText(info[gaugeIDs[i]].name);
-        gauge->addNeedle(70)->setValueRange(info[gaugeIDs[i]].minValue,info[gaugeIDs[i]].maxValue);
+        auto needle = gauge->addNeedle(70);
+        needle->setValueRange(info[gaugeIDs[i]].minValue,info[gaugeIDs[i]].maxValue);
+        gaugeNeedles[i] = needle;
+        auto label = gauge->addLabel(20);
+        label->setText("0");
+        gaugeLabels[i] = label;
         i++;
     }
 }
@@ -91,6 +104,58 @@ void MainWindow::setupTables()
         ++i;
     }
     tblValue->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+}
+
+void MainWindow::updateDetailTables(Packet &packet)
+{
+    const DataStorage& instance = DataStorage::getInstance();
+    const auto & allInfo = instance.getInfo();
+    auto tblError = this->ui->tblError;
+    auto tblValue = this->ui->tblValue;
+    auto allErrors = instance.allErrorCodes();
+    auto allDataCodes = instance.allDataCodes();
+    foreach(const auto& packetData,packet.getAllPackets()){
+        auto id = packetData.getId();
+        auto value = packetData.getValue();
+        auto name = allInfo[id].name;
+        if(allErrors.contains(static_cast<DataStorage::DataID>(id))){
+            auto items = tblError->findItems(name,Qt::MatchExactly);
+            auto rowIndex = tblError->row(items[0]);
+            QString str = static_cast<bool>(value)?"Error":"Ok";
+            tblError->item(rowIndex,1)->setText(QString(str));
+        }
+        else if(allDataCodes.contains(static_cast<DataStorage::DataID>(id))){
+            auto items = tblValue->findItems(name,Qt::MatchExactly);
+            auto rowIndex = tblValue->row(items[0]);
+            tblValue->item(rowIndex,1)->setText(QString::number(value));
+        }
+    }
+}
+
+void MainWindow::updateMainIndicators(Packet &packet)
+{
+    using ids = DataStorage::DataID;
+    static const QVector<ids> gaugeIDs = {ids::FUEL,ids::MOTOR_SPEED,ids::OIL_PRESSURE,ids::OIL_TEMPERATURE,ids::TORQUE};
+    const DataStorage& instance = DataStorage::getInstance();
+    const auto & allInfo = instance.getInfo();
+    auto allErrors = instance.allErrorCodes();
+    this->ui->ledLast->setState(false);
+    foreach(const auto& packetData,packet.getAllPackets()){
+        auto id = packetData.getId();
+        auto idEnum = static_cast<ids>(id);
+        auto value = packetData.getValue();
+        if(gaugeIDs.contains(idEnum)){
+            auto index = gaugeIDs.indexOf(idEnum);
+            QcNeedleItem* needle = dynamic_cast<QcNeedleItem*>(gaugeNeedles[index]);
+            needle->setCurrentValue(value);
+            QcLabelItem* label = dynamic_cast<QcLabelItem*>(gaugeLabels[index]);
+            label->setText(QString::number(value));
+        }
+        else if(allErrors.contains(idEnum) && static_cast<bool>(value)){
+            this->ui->ledLast->setState(true);
+            this->ui->ledAll->setState(true);
+        }
+    }
 }
 
 void MainWindow::openConfig()
