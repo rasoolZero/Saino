@@ -33,9 +33,13 @@ bool SerialController::connect()
     return port->isOpen();
 }
 
-void SerialController::disconnect()
+bool SerialController::disconnect()
 {
-    port->close();
+    if(port->isOpen())
+        port->close();
+    else
+        return false;
+    return true;
 }
 
 QString SerialController::error()

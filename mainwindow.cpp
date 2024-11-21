@@ -201,8 +201,8 @@ void MainWindow::stopSerial()
     this->ui->actionOpen_Config->setDisabled(false);
     this->ui->actionStart->setDisabled(false);
     this->ui->actionSave_into_Excel->setDisabled(false);
-    SerialController::getInstance().disconnect();
-
+    if(SerialController::getInstance().disconnect())
+        QMessageBox::information(this,"Port Closed","serial port has been closed");
 }
 
 void MainWindow::saveExcel()

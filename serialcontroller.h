@@ -38,7 +38,7 @@ public:
     static SerialController& getInstance();
 
     bool connect();
-    void disconnect();
+    bool disconnect();
     QString error();
 
 public slots:
