@@ -52,6 +52,11 @@ void Packet::removeBadData()
     }
 }
 
+msgcounter_t Packet::getMsgCounter() const
+{
+    return msgCounter;
+}
+
 const QList<PacketData> &Packet::getAllPackets()
 {
     return this->allPacketData;

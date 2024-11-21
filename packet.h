@@ -80,6 +80,8 @@ public:
 
     Packet(const QByteArray& bytes);
     const QList<PacketData> &getAllPackets();
+    msgcounter_t getMsgCounter() const;
+
 private:
     checksum_t calculateChecksum(const QByteArray & bytes);
     void evaluatePacketData(const QByteArray& bytes);
