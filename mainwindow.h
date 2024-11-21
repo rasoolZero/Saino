@@ -39,5 +39,6 @@ private slots:
     void openConfig();
     void startSerial();
     void stopSerial();
+    void saveExcel();
 };
 #endif // MAINWINDOW_H

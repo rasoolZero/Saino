@@ -5,6 +5,9 @@
 #include "datastorage.h"
 #include "parser.h"
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QDebug>
+#include "excelhelper.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,6 +36,7 @@ void MainWindow::setupMenuBar()
     connect(this->ui->actionOpen_Config, &QAction::triggered, this, &MainWindow::openConfig);
     connect(this->ui->actionStart, &QAction::triggered, this, &MainWindow::startSerial);
     connect(this->ui->actionStop, &QAction::triggered, this, &MainWindow::stopSerial);
+    connect(this->ui->actionSave_into_Excel,&QAction::triggered,this,&MainWindow::saveExcel);
 }
 
 void MainWindow::setupGauge()
@@ -184,6 +188,7 @@ void MainWindow::startSerial()
     if(result){
         this->ui->actionOpen_Config->setDisabled(true);
         this->ui->actionStart->setDisabled(true);
+        this->ui->actionSave_into_Excel->setDisabled(true);
         QMessageBox::information(this,"Success","Serial connection has been opened successfully");
     }
     else{
@@ -195,5 +200,24 @@ void MainWindow::stopSerial()
 {
     this->ui->actionOpen_Config->setDisabled(false);
     this->ui->actionStart->setDisabled(false);
+    this->ui->actionSave_into_Excel->setDisabled(false);
     SerialController::getInstance().disconnect();
+
+}
+
+void MainWindow::saveExcel()
+{
+    try{
+        ExcelHelper saver;
+        QString filename = QFileDialog::getSaveFileName(this,tr("Save as Excel"),QDir::homePath(),tr("Excel (*.xlsx)"));
+        if(filename.isEmpty())
+            return;
+        saver.save(filename);
+    }
+    catch(const EmptyStorage &){
+        QMessageBox::critical(this,"No Data","No data in the storage to be saved");
+    }
+    catch(const QException & e){
+        QMessageBox::critical(this,"Error",QString("Error while saving data\n")+e.what());
+    }
 }
