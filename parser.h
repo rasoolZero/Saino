@@ -14,8 +14,9 @@ class Parser : public QObject
     Parser(const Parser &other) = delete;
     Parser& operator=(const Parser &other) = delete;
 
-    msgcounter_t msgCounter = 0;
+    bool isMsgcounterValid(msgcounter_t newMsgCounter);
 
+    msgcounter_t msgCounter = 0;
     QByteArray totalBytes;
 public:
     static Parser& getInstance();

@@ -71,8 +71,6 @@ Packet::Packet(const QByteArray &bytes)
         BadChecksum().raise();
     evaluatePacketData(bytes);
     removeBadData();
-    if(idN == 0 || this->allPacketData.size() == 0)
-        EmptyPacket().raise();
 }
 
 data_t PacketData::getData() const

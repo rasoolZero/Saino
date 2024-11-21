@@ -16,21 +16,6 @@ public:
     }
 };
 
-
-class EmptyPacket : public QException{
-    // QException interface
-public:
-    void raise() const override
-    {
-        throw *this;
-    }
-    QException *clone() const override
-    {
-        return new EmptyPacket(*this);
-    }
-};
-
-
 template <typename T>
 T byteArrayConvert(const QByteArray &bytes)
 {

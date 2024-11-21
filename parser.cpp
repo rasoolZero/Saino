@@ -31,10 +31,16 @@ void Parser::parseData(QByteArray data)
     qDebug() << "total bytes:" << totalBytes;
     if(totalBytes.size() < minimumSize)
         return;
-
-    auto headerIndex = totalBytes.indexOf(header + QByteArray(1,msgCounter));
+    // TODO: take care of missed msg counter
+    auto headerIndex = totalBytes.indexOf(header);
 
     while(headerIndex != -1){
+        auto msgCounterIndex = headerIndex+header.size();
+        msgcounter_t newMsgCounter = totalBytes[msgCounterIndex];
+        if (!isMsgcounterValid(newMsgCounter)){
+            headerIndex = totalBytes.indexOf(header,headerIndex+1);
+            continue;
+        }
         auto footerIndex = totalBytes.indexOf(footer,headerIndex);
         qsizetype idNIndex = headerIndex + header.size() + sizeof(msgCounter);
 
@@ -50,16 +56,10 @@ void Parser::parseData(QByteArray data)
                     Packet packet(packetData);
                     emit packetGenerated(packet);
                     totalBytes.remove(0, footerIndex + 1);
-                    msgCounter++;
+                    msgCounter=newMsgCounter+1;
                 }
                 catch(const BadChecksum &){
                     qDebug() << "Bad Checksum";
-                }
-
-                catch(const EmptyPacket &){
-                    qDebug() << "Empty Packet";
-                    totalBytes.remove(0, footerIndex + 1);
-                    msgCounter++;
                 }
                 qDebug() << "total bytes:" << totalBytes;
                 break;
@@ -67,7 +67,7 @@ void Parser::parseData(QByteArray data)
             footerIndex = totalBytes.indexOf(footer,footerIndex+1);
         }
 
-        headerIndex = totalBytes.indexOf(header + QByteArray(1,msgCounter),headerIndex+1);
+        headerIndex = totalBytes.indexOf(header,headerIndex+1);
     }
 }
 
@@ -75,4 +75,10 @@ Parser::Parser(QObject *parent)
     : QObject(parent)
 {
     connect(this,&Parser::packetGenerated,&DataStorage::getInstance(),&DataStorage::newPacket);
+}
+
+bool Parser::isMsgcounterValid(msgcounter_t newMsgCounter)
+{
+    const auto maxMsgCounter = std::numeric_limits<msgcounter_t>::max();
+    return newMsgCounter >= this->msgCounter || (this->msgCounter>=maxMsgCounter*(3.f/4.f) && newMsgCounter<=maxMsgCounter*(1.f/4.f));
 }
