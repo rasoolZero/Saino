@@ -207,12 +207,14 @@ void MainWindow::stopSerial()
 
 void MainWindow::saveExcel()
 {
+    bool saved = false;
     try{
         ExcelHelper saver;
         QString filename = QFileDialog::getSaveFileName(this,tr("Save as Excel"),QDir::homePath(),tr("Excel (*.xlsx)"));
         if(filename.isEmpty())
             return;
         saver.save(filename);
+        saved = true;
     }
     catch(const EmptyStorage &){
         QMessageBox::critical(this,"No Data","No data in the storage to be saved");
@@ -220,4 +222,6 @@ void MainWindow::saveExcel()
     catch(const QException & e){
         QMessageBox::critical(this,"Error",QString("Error while saving data\n")+e.what());
     }
+    if(saved)
+        QMessageBox::information(this,"Success","Data has been saved in excel file");
 }
