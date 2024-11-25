@@ -563,7 +563,8 @@ void QcDegreesItem::draw(QPainter *painter)
 
     painter->setPen(mColor);
     float r = getRadius(tmpRect);
-    for(float val = mMinValue;val<=mMaxValue;val+=mStep){
+    float val = mMinValue;
+    while(val <= mMaxValue){
         float deg = getDegFromValue(val);
         QPointF pt = getPoint(deg,tmpRect);
         QPainterPath path;
@@ -579,7 +580,7 @@ void QcDegreesItem::draw(QPainter *painter)
 
         painter->setPen(pen);
         painter->drawLine(pt,newPt);
-
+        val+=mStep;
     }
 }
 
@@ -794,7 +795,8 @@ void QcValuesItem::draw(QPainter*painter)
 
     painter->setFont(font);
     painter->setPen(mColor);
-    for(float val = mMinValue;val<=mMaxValue;val+=mStep){
+    float val = mMinValue;
+    while(val <= mMaxValue){
         float deg = getDegFromValue(val);
         QPointF pt = getPoint(deg,tmpRect);
         QPainterPath path;
@@ -808,6 +810,7 @@ void QcValuesItem::draw(QPainter*painter)
         txtRect.moveCenter(textCenter);
 
         painter->drawText( txtRect, Qt::TextSingleLine, strVal );
+        val+=mStep;
     }
 }
 

@@ -24,6 +24,7 @@ Config::Config(QWidget *parent)
     ui->cmbStopbits->setCurrentText(QtEnumToString(SerialManager::getInstance().getStopbit()));
     ui->cmbPorts->setCurrentText(SerialManager::getInstance().getPort());
 
+    connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(onAccept()));
 }
 
 Config::~Config()
@@ -31,11 +32,13 @@ Config::~Config()
     delete ui;
 }
 
-void Config::on_buttonBox_accepted()
+void Config::onAccept()
 {
     SerialManager::getInstance().setPort(ui->cmbPorts->currentText());
     SerialManager::getInstance().setParity(ui->cmbParity->currentData().value<SerialManager::Parity>());
     SerialManager::getInstance().setRate(ui->cmbRates->currentData().value<qint32>());
     SerialManager::getInstance().setStopbit(ui->cmbStopbits->currentData().value<SerialManager::StopBits>());
+    this->accept();
 }
+
 
