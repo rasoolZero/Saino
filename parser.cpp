@@ -26,7 +26,8 @@ void Parser::parseData(QByteArray data)
     static const auto header = Packet::header;
     static const auto footer = Packet::footer;
     static const auto minimumSize = Packet::minimumSize;
-
+    if(totalBytes.size()>=maxSize)
+        totalBytes.truncate(maxSize/2);
     totalBytes+=data;
     qDebug() << "total bytes:" << totalBytes;
     if(totalBytes.size() < minimumSize)

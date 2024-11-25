@@ -18,6 +18,7 @@ class Parser : public QObject
 
     msgcounter_t msgCounter = 0;
     QByteArray totalBytes;
+    constexpr qsizetype maxSize = 20000;
 public:
     static Parser& getInstance();
     void reset();
