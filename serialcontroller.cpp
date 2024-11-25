@@ -6,9 +6,10 @@
 SerialController::SerialController(QObject *parent)
     : QObject{parent}
     , port{QSharedPointer<QSerialPort>::create(this)}
+    , reader{port}
 {
-    QObject::connect(port.get(),&QSerialPort::readyRead,this,&SerialController::dataReady);
-    QObject::connect(this,&SerialController::dataRecieved,&Parser::getInstance(),&Parser::parseData);
+    QObject::connect(&readerThread, SIGNAL(started()), &reader, SLOT(process()));
+    reader.moveToThread(&readerThread);
 }
 
 SerialController &SerialController::getInstance()
@@ -30,13 +31,17 @@ bool SerialController::connect()
     port->setParity(manager.getParity());
     port->setStopBits(manager.getStopbit());
     port->open(QIODevice::ReadOnly);
+    if(port->isOpen())
+        readerThread.start();
     return port->isOpen();
 }
 
 bool SerialController::disconnect()
 {
-    if(port->isOpen())
+    if(port->isOpen()){
         port->close();
+        readerThread.quit();
+    }
     else
         return false;
     return true;
@@ -47,10 +52,20 @@ QString SerialController::error()
     return port->errorString();
 }
 
-void SerialController::dataReady()
+QSharedPointer<SerialController> SerialController::instance;
+
+PortReader::PortReader(QSharedPointer<QSerialPort> port, QObject *parent):
+    QObject{parent},
+    port{port}
 {
-    if(port->isOpen())
-        emit dataRecieved(port->readAll());
+    QObject::connect(this,&PortReader::dataRecieved,&Parser::getInstance(),&Parser::parseData);
 }
 
-QSharedPointer<SerialController> SerialController::instance;
+void PortReader::process()
+{
+    while(port->isOpen()){
+        if (port->waitForReadyRead(5)) {
+            emit dataRecieved(port->readAll());
+        }
+    }
+}

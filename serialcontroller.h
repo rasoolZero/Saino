@@ -5,6 +5,7 @@
 #include <QSerialPort>
 #include <QSharedPointer>
 #include <QException>
+#include <QThread>
 
 class EmptyPortName : public QException{
 public:
@@ -22,6 +23,22 @@ public:
     }
 };
 
+
+class PortReader : public QObject{
+
+    Q_OBJECT
+    const QSharedPointer<QSerialPort> port;
+public:
+    explicit PortReader(QSharedPointer<QSerialPort> port,QObject *parent = nullptr);
+
+public slots:
+    void process();
+
+signals:
+    void dataRecieved(QByteArray data);
+};
+
+
 class SerialController : public QObject
 {
 
@@ -34,17 +51,15 @@ class SerialController : public QObject
     SerialController(const SerialController& other) = delete;
     SerialController& operator=(const SerialController &other) = delete;
 
+    QThread readerThread;
+    PortReader reader;
+
 public:
     static SerialController& getInstance();
 
     bool connect();
     bool disconnect();
     QString error();
-
-public slots:
-    void dataReady();
-signals:
-    void dataRecieved(QByteArray data);
 };
 
 #endif // SERIALCONTROLLER_H
