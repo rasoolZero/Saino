@@ -47,6 +47,10 @@ void Packet::removeBadData()
             it = allPacketData.erase(it);
             --this->idN;
         }
+        else if(dataInfo[id].isError && it->getFactor() > 1.0f){
+            it = allPacketData.erase(it);
+            --this->idN;
+        }
         else
             ++it;
     }
