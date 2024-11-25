@@ -2,6 +2,7 @@
 #define PACKET_H
 #include <QObject>
 #include <QException>
+#include <QMetaType>
 
 class BadChecksum : public QException{
     // QException interface
@@ -63,7 +64,7 @@ public:
     inline static const QByteArray footer = QByteArray::fromHex("55");
     inline static const qsizetype minimumSize = (header.size() + footer.size() + sizeof(msgcounter_t) + sizeof(idnumber_t) + sizeof(checksum_t) + PacketData::dataSize());
 
-    Packet(const QByteArray& bytes);
+    Packet(const QByteArray& bytes = {});
     const QList<PacketData> &getAllPackets();
     msgcounter_t getMsgCounter() const;
 
@@ -77,4 +78,5 @@ private:
     QList<PacketData> allPacketData;
 };
 
+Q_DECLARE_METATYPE(Packet)
 #endif // PACKET_H

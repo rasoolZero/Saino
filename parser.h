@@ -21,9 +21,8 @@ class Parser : public QObject
 public:
     static Parser& getInstance();
     void reset();
-
-public slots:
     void parseData(QByteArray data);
+
 signals:
     void packetGenerated(Packet packet);
 };

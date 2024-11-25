@@ -19,6 +19,13 @@ SerialController &SerialController::getInstance()
     return *instance;
 }
 
+SerialController::~SerialController()
+{
+    this->disconnect();
+    this->readerThread.wait();
+    this->readerThread.quit();
+}
+
 bool SerialController::connect()
 {
     auto& manager = SerialManager::getInstance();
@@ -58,14 +65,14 @@ PortReader::PortReader(QSharedPointer<QSerialPort> port, QObject *parent):
     QObject{parent},
     port{port}
 {
-    QObject::connect(this,&PortReader::dataRecieved,&Parser::getInstance(),&Parser::parseData);
 }
 
 void PortReader::process()
 {
+    auto & instance = Parser::getInstance();
     while(port->isOpen()){
         if (port->waitForReadyRead(5)) {
-            emit dataRecieved(port->readAll());
+            instance.parseData(port->readAll());
         }
     }
 }

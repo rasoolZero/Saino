@@ -33,9 +33,6 @@ public:
 
 public slots:
     void process();
-
-signals:
-    void dataRecieved(QByteArray data);
 };
 
 
@@ -56,6 +53,7 @@ class SerialController : public QObject
 
 public:
     static SerialController& getInstance();
+    ~SerialController();
 
     bool connect();
     bool disconnect();

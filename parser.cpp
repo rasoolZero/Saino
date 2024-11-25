@@ -2,7 +2,7 @@
 #include "packet.h"
 #include "datastorage.h"
 #include <QDebug>
-
+#include <QMetaType>
 
 QSharedPointer<Parser> Parser::instance = nullptr;
 
@@ -31,7 +31,6 @@ void Parser::parseData(QByteArray data)
     qDebug() << "total bytes:" << totalBytes;
     if(totalBytes.size() < minimumSize)
         return;
-    // TODO: take care of missed msg counter
     auto headerIndex = totalBytes.indexOf(header);
 
     while(headerIndex != -1){
@@ -74,6 +73,7 @@ void Parser::parseData(QByteArray data)
 Parser::Parser(QObject *parent)
     : QObject(parent)
 {
+    qRegisterMetaType<Packet>("Packet");
     connect(this,&Parser::packetGenerated,&DataStorage::getInstance(),&DataStorage::newPacket);
 }
 
