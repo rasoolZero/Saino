@@ -24,7 +24,7 @@ void Packet::evaluatePacketData(const QByteArray &bytes)
     msgCounter = bytes[header.size()];
     idN = bytes.at(header.size() + sizeof(msgcounter_t));
     const QByteArray allData = bytes.mid(header.size() + sizeof(msgcounter_t) + sizeof(idnumber_t), idN * packetDataSize);
-    for(idnumber_t i = 0;i < idN * packetDataSize;i+=packetDataSize){
+    for(qsizetype i = 0;i < idN * packetDataSize;i+=packetDataSize){
         auto onePacketData = allData.mid(i,packetDataSize);
         id_t id = byteArrayConvert<id_t>(onePacketData.mid(0,sizeof(id_t)));
         reserve_t reserve = byteArrayConvert<reserve_t>(onePacketData.mid(sizeof(id_t),sizeof(reserve_t)));
