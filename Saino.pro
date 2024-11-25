@@ -49,3 +49,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
+QMAKE_CXXFLAGS_RELEASE *= /O2
+QMAKE_CXXFLAGS_RELEASE *= /GL
+
