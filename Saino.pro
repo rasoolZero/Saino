@@ -53,8 +53,11 @@ QMAKE_CXXFLAGS_RELEASE *= /O2
 QMAKE_CXXFLAGS_RELEASE *= /GL
 
 RESOURCES += \
+    assets.qrc \
     breeze.qrc
 
 *msvc* { # visual studio spec filter
       QMAKE_CXXFLAGS_DEBUG += -MP
 }
+
+RC_ICONS = assets/icon.ico

@@ -122,6 +122,5 @@
         <file>dark-blue/vseptoolbar.svg</file>
         <file>dark-blue/window_close.svg</file>
         <file>dark/stylesheet.qss</file>
-        <file>Roboto.ttf</file>
     </qresource>
 </RCC>
