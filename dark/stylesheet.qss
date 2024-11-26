@@ -1359,6 +1359,7 @@ QTabBar::tab:top,
 QTabBar::tab:top:last,
 QTabBar::tab:top:only-one
 {
+    font-size: 9pt;
     color: #eff0f1;
     border: 0.04em transparent black;
     border-left: 0.04em solid #76797c;
