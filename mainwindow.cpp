@@ -45,25 +45,30 @@ void MainWindow::setupGauge()
     QcGaugeWidget* const allGauges[] = {ui->gauge1,ui->gauge2,ui->gauge3,ui->gauge4,ui->gauge5};
     auto info = DataStorage::getInstance().getInfo();
     int i=0;
+    QColor mainColor(0xef,0xf0,0xf1);
+    QColor accent(0x3d,0xae,0xe9);
+    auto background = QColor(0x31,0x36,0x3b).lighter(120);
     for(QcGaugeWidget* gauge : allGauges){
         auto bg2 = gauge->addBackground(92);
         bg2->clearrColors();
-        bg2->addColor(0.1f,Qt::blue);
-        bg2->addColor(1.f,Qt::darkBlue);
-        gauge->addArc(90);
+        bg2->addColor(0.0f,accent);
         auto bg = gauge->addBackground(90);
         bg->clearrColors();
-        bg->addColor(0.1f,Qt::lightGray);
-        bg->addColor(1.f,Qt::darkGray);
+        bg->addColor(0.0f,background);
         auto values = gauge->addValues(80);
         values->setValueRange(info[gaugeIDs[i]].minValue,info[gaugeIDs[i]].maxValue);
         values->setStep((info[gaugeIDs[i]].maxValue - info[gaugeIDs[i]].minValue)/10);
-        gauge->addLabel(40)->setText(info[gaugeIDs[i]].name);
+        values->setColor(mainColor);
+        auto namelabel = gauge->addLabel(40);
+        namelabel->setText(info[gaugeIDs[i]].name);
+        namelabel->setColor(mainColor);
         auto needle = gauge->addNeedle(70);
         needle->setValueRange(info[gaugeIDs[i]].minValue,info[gaugeIDs[i]].maxValue);
+        needle->setColor(accent);
         gaugeNeedles[i] = needle;
         auto label = gauge->addLabel(20);
         label->setText("0");
+        label->setColor(mainColor);
         gaugeLabels[i] = label;
         i++;
     }
