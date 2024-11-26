@@ -40,6 +40,10 @@
  *  ---------------
  */
 
+* {
+  font-family: Roboto;
+}
+
 QToolTip
 {
     /* 0.2ex is the smallest value that's not ignored on Windows. */
