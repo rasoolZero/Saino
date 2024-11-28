@@ -48,14 +48,9 @@
 class QcGaugeWidget;
 class QcItem;
 class QcBackgroundItem;
-class QcDegreesItem;
 class QcValuesItem;
-class QcArcItem;
-class QcColorBand;
 class QcNeedleItem;
 class QcLabelItem;
-class QcGlassItem;
-class QcAttitudeMeter;
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -66,19 +61,16 @@ public:
     explicit QcGaugeWidget(QWidget *parent = 0);
 
     QcBackgroundItem *addBackground(float position);
-    QcDegreesItem *addDegrees(float position);
     QcValuesItem *addValues(float position);
-    QcArcItem *addArc(float position);
-    QcColorBand *addColorBand(float position);
     QcNeedleItem *addNeedle(float position);
     QcLabelItem *addLabel(float position);
-    QcGlassItem *addGlass(float position);
-    QcAttitudeMeter *addAttitudeMeter(float position);
 
     void addItem(QcItem *item, float position);
     int removeItem(QcItem *item);
     QList<QcItem *> items();
     QList<QcItem *> mItems;
+
+    virtual ~QcGaugeWidget();
 
 signals:
 
@@ -163,17 +155,6 @@ private:
     QList<QPair<float, QColor> > mColors;
     QLinearGradient mLinearGrad;
 };
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-
-class QcGlassItem : public QcItem
-{
-    Q_OBJECT
-public:
-    explicit QcGlassItem(QObject *parent = 0);
-    void draw(QPainter *);
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -197,65 +178,6 @@ private:
     QString mText;
     QColor mColor;
 };
-
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-
-class QCGAUGE_DECL QcArcItem : public QcScaleItem
-{
-    Q_OBJECT
-public:
-    explicit QcArcItem(QObject *parent = 0);
-    void draw(QPainter *);
-    void setColor(const QColor &color);
-
-private:
-    QColor mColor;
-
-signals:
-
-public slots:
-};
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-
-class QCGAUGE_DECL QcColorBand : public QcScaleItem
-{
-    Q_OBJECT
-public:
-    explicit QcColorBand(QObject *parent = 0);
-    void draw(QPainter *);
-    void setColors(const QList<QPair<QColor, float> > &colors);
-
-private:
-    QPainterPath createSubBand(float from, float sweep);
-
-    QList<QPair<QColor, float> > mBandColors;
-    float mBandStartValue;
-};
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-class QCGAUGE_DECL QcDegreesItem : public QcScaleItem
-{
-    Q_OBJECT
-public:
-    explicit QcDegreesItem(QObject *parent = 0);
-    void draw(QPainter *painter);
-    void setStep(float step);
-    void setColor(const QColor &color);
-    void setSubDegree(bool);
-
-private:
-    float mStep;
-    QColor mColor;
-    bool mSubDegree;
-};
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
 
 class QCGAUGE_DECL QcNeedleItem : public QcScaleItem
 {
@@ -316,35 +238,5 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-class QCGAUGE_DECL QcAttitudeMeter : public QcItem
-{
-    Q_OBJECT
-public:
-    explicit QcAttitudeMeter(QObject *parent = 0);
-
-    void draw(QPainter *);
-    void setCurrentPitch(float pitch);
-    void setCurrentRoll(float roll);
-
-private:
-    float mRoll;
-    float mPitch;
-    float mPitchOffset;
-
-    QPolygonF mHandlePoly;
-    QPainterPath mStepsPath;
-
-    QPointF getIntersection(float r, const QPointF &pitchPoint, const QPointF &pt);
-    float getStartAngle(const QRectF &tmpRect);
-
-    void drawDegrees(QPainter *);
-    void drawDegree(QPainter *painter, const QRectF &tmpRect, float deg);
-    void drawUpperEllipse(QPainter *, const QRectF &);
-    void drawLowerEllipse(QPainter *, const QRectF &);
-    void drawPitchSteps(QPainter *, const QRectF &);
-    void drawHandle(QPainter *);
-    void drawSteps(QPainter *, float);
-};
 
 #endif // QCGAUGEWIDGET_H
