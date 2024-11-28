@@ -8,32 +8,44 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+SRC = src/
+SRC_GUI = $${SRC}/gui
+SRC_LOGIC = $${SRC}/logic
+SRC_SERIAL = $${SRC}/serial
+
+INCLUDE = include/
+INCLUDE_GUI = $${INCLUDE}/gui
+INCLUDE_LOGIC = $${INCLUDE}/logic
+INCLUDE_SERIAL = $${INCLUDE}/serial
+
 SOURCES += \
-    config.cpp \
-    datastorage.cpp \
-    excelhelper.cpp \
-    led.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    parser.cpp \
-    qcgaugewidget.cpp \
-    serialcontroller.cpp \
-    serialmanager.cpp
+    $${SRC_GUI}/config.cpp \
+    $${SRC_LOGIC}/datastorage.cpp \
+    $${SRC_LOGIC}/excelhelper.cpp \
+    $${SRC_GUI}/led.cpp \
+    $${SRC}/main.cpp \
+    $${SRC_GUI}/mainwindow.cpp \
+    $${SRC_LOGIC}/parser.cpp \
+    $${SRC_GUI}/qcgaugewidget.cpp \
+    $${SRC_SERIAL}/serialcontroller.cpp \
+    $${SRC_SERIAL}/serialmanager.cpp
 
 HEADERS += \
-    config.h \
-    datastorage.h \
-    excelhelper.h \
-    led.h \
-    mainwindow.h \
-    parser.h \
-    qcgaugewidget.h \
-    serialcontroller.h \
-    serialmanager.h
+    $${INCLUDE_GUI}/config.h \
+    $${INCLUDE_LOGIC}/datastorage.h \
+    $${INCLUDE_LOGIC}/excelhelper.h \
+    $${INCLUDE_GUI}/led.h \
+    $${INCLUDE_GUI}/mainwindow.h \
+    $${INCLUDE_LOGIC}/parser.h \
+    $${INCLUDE_GUI}/qcgaugewidget.h \
+    $${INCLUDE_SERIAL}/serialcontroller.h \
+    $${INCLUDE_SERIAL}/serialmanager.h
+
+INCLUDEPATH += include/
 
 FORMS += \
-    config.ui \
-    mainwindow.ui
+    form/config.ui \
+    form/mainwindow.ui
 
 # SainoPacketLib
     include(../SainoPacketLib/SainoPacketLib.pri)

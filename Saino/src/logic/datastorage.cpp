@@ -1,4 +1,4 @@
-#include "DataStorage.h"
+#include "logic/DataStorage.h"
 
 QSharedPointer<DataStorage> DataStorage::instance = nullptr;
 

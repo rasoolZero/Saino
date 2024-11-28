@@ -1,4 +1,4 @@
-#include "serialmanager.h"
+#include "serial/serialmanager.h"
 
 QSerialPort::Parity SerialManager::getParity() const
 {

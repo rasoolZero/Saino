@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include <QMap>
-#include "datastorage.h"
-#include "qcgaugewidget.h"
+#include "gui/qcgaugewidget.h"
+#include "logic/datastorage.h"
 #include <SPL/common.h>
 #include <SPL/packet.h>
 

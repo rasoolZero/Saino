@@ -1,5 +1,5 @@
-#include "excelhelper.h"
-#include "datastorage.h"
+#include "logic/excelhelper.h"
+#include "logic/datastorage.h"
 #include "xlsxcellrange.h"
 #include "xlsxchart.h"
 #include "xlsxchartsheet.h"

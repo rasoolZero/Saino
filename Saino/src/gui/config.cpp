@@ -1,6 +1,6 @@
-#include "config.h"
+#include "gui/config.h"
+#include "serial/serialmanager.h"
 #include "ui_config.h"
-#include <serialmanager.h>
 
 Config::Config(QWidget *parent)
     : QDialog(parent)

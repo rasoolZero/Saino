@@ -1,7 +1,7 @@
-#include "parser.h"
+#include "logic/parser.h"
 #include <QDebug>
 #include <QMetaType>
-#include "datastorage.h"
+#include "logic/datastorage.h"
 #include <SPL/packet.h>
 
 QSharedPointer<Parser> Parser::instance = nullptr;

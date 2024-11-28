@@ -1,13 +1,13 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "config.h"
-#include "serialcontroller.h"
-#include "datastorage.h"
-#include "parser.h"
-#include <QMessageBox>
-#include <QFileDialog>
+#include "gui/mainwindow.h"
 #include <QDebug>
-#include "excelhelper.h"
+#include <QFileDialog>
+#include <QMessageBox>
+#include "gui/config.h"
+#include "logic/datastorage.h"
+#include "logic/excelhelper.h"
+#include "logic/parser.h"
+#include "serial/serialcontroller.h"
+#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

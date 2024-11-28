@@ -1,8 +1,8 @@
-#include "serialcontroller.h"
+#include "serial/serialcontroller.h"
 #include <QDebug>
 #include <QException>
-#include "parser.h"
-#include "serialmanager.h"
+#include "logic/parser.h"
+#include "serial/serialmanager.h"
 
 SerialController::SerialController(QObject *parent)
     : QObject{parent}

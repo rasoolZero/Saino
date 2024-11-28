@@ -538,13 +538,13 @@
   <customwidget>
    <class>QcGaugeWidget</class>
    <extends>QWidget</extends>
-   <header>qcgaugewidget.h</header>
+   <header>gui/qcgaugewidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>LED</class>
    <extends>QWidget</extends>
-   <header>led.h</header>
+   <header>gui/led.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
