@@ -75,12 +75,13 @@ allInfo = {
 index = 0
 
 #define parameters here
-TOTAL_PACKETS = 5000
-BAD_CHECKSUM_INTERVAL = 17
-NOISE_IN_PACKET_INTERVAL = 19
-MISS_ONE_FIELD_IN_PACKET = True
+TOTAL_PACKETS = 300
+BAD_CHECKSUM_INTERVAL = -1
+NOISE_IN_PACKET_INTERVAL = -1
+MISS_ONE_FIELD_IN_PACKET = False
 SEND_DATA_IN_BYTES = False
-SEND_DATA_RANDOM_DATA = False
+SEND_DATA_RANDOM_DATA = True
+SEND_NOISE = False
 
 class PacketData:
     def __init__(self,id = 0x1, miss = False):
@@ -158,23 +159,24 @@ def open_port(portName : serial.tools.list_ports_common.ListPortInfo) -> serial.
 
 
 def run_test(ser : serial.Serial):
-    ser.write(bytearray([2]*20001))
     for i in range(TOTAL_PACKETS):
         global index
         index = i
         msgCounter = i % 256
-        packet = Packet(msgCounter,(i%BAD_CHECKSUM_INTERVAL)==0)
+        packet = Packet(msgCounter,(BAD_CHECKSUM_INTERVAL != -1) and (i%BAD_CHECKSUM_INTERVAL)==0)
         bytes = packet.tobytes()
-        if (i % NOISE_IN_PACKET_INTERVAL) == 0:
-            bytes.insert(len(bytes), random.randint(0,255))
-        ser.write(bytearray([1,2,3,4,5,6])) # noise
+        if (i % NOISE_IN_PACKET_INTERVAL) == 0 and (NOISE_IN_PACKET_INTERVAL != -1):
+            bytes.insert(int(len(bytes)/2), random.randint(0,255))
+        if SEND_NOISE:
+            ser.write(bytearray([1,2,3,4,5,6])) # noise
         if SEND_DATA_IN_BYTES:
             for byte in bytes:
                 ser.write([byte])
         else:
             ser.write(bytes)
             sleep(20/1000) 
-        ser.write(bytearray([1,2,3,4,5,6])) # noise
+        if SEND_NOISE:
+            ser.write(bytearray([1,2,3,4,5,6])) # noise
 
 def run():
     print("choose a com port:")

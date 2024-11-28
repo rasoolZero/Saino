@@ -1,7 +1,8 @@
 #include "serialcontroller.h"
-#include "serialmanager.h"
+#include <QDebug>
 #include <QException>
 #include "parser.h"
+#include "serialmanager.h"
 
 SerialController::SerialController(QObject *parent)
     : QObject{parent}
@@ -70,9 +71,15 @@ PortReader::PortReader(QSharedPointer<QSerialPort> port, QObject *parent):
 void PortReader::process()
 {
     auto & instance = Parser::getInstance();
+#ifdef QT_DEBUG
+    int counter = 1;
+#endif
     while(port->isOpen()){
         if (port->waitForReadyRead(5)) {
             instance.parseData(port->readAll());
+#ifdef QT_DEBUG
+            qDebug() << "COUNTER:" << counter++;
+#endif
         }
     }
 }
