@@ -64,13 +64,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 QMAKE_CXXFLAGS_RELEASE *= /O2
 QMAKE_CXXFLAGS_RELEASE *= /GL
+*msvc* { # visual studio spec filter
+      QMAKE_CXXFLAGS_DEBUG += -MP
+}
 
 RESOURCES += \
     assets.qrc \
     breeze.qrc
 
-*msvc* { # visual studio spec filter
-      QMAKE_CXXFLAGS_DEBUG += -MP
-}
 
 RC_ICONS = assets/icon.ico

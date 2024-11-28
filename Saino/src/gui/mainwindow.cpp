@@ -65,6 +65,7 @@ void MainWindow::setupGauge()
         auto needle = gauge->addNeedle(70);
         needle->setValueRange(info[gaugeIDs[i]].minValue, info[gaugeIDs[i]].maxValue);
         needle->setColor(accent);
+        needle->setNeedle(needle->TriangleNeedle);
         gaugeNeedles[i] = needle;
         auto label = gauge->addLabel(20);
         label->setText("0");

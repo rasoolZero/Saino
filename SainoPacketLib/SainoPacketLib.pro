@@ -21,6 +21,14 @@ HEADERS += \
 
 INCLUDEPATH += include/SPL
 
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
+QMAKE_CXXFLAGS_RELEASE *= /O2
+QMAKE_CXXFLAGS_RELEASE *= /GL
+*msvc* { # visual studio spec filter
+      QMAKE_CXXFLAGS_DEBUG += -MP
+}
+
+
 # Default rules for deployment.
 unix {
     target.path = $$[QT_INSTALL_PLUGINS]/generic
