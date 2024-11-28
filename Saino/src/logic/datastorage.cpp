@@ -2,7 +2,7 @@
 
 QSharedPointer<DataStorage> DataStorage::instance = nullptr;
 
-DataStorage& DataStorage::getInstance()
+DataStorage &DataStorage::getInstance()
 {
     if (!instance)
         instance = QSharedPointer<DataStorage>(new DataStorage);

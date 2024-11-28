@@ -13,7 +13,7 @@ class Parser : public SPL::Parser
     static QSharedPointer<Parser> instance;
     explicit Parser(QObject *parent = nullptr);
     Parser(const Parser &other) = delete;
-    Parser& operator=(const Parser &other) = delete;
+    Parser &operator=(const Parser &other) = delete;
 
 public:
     static Parser &getInstance();

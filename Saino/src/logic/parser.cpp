@@ -6,7 +6,7 @@
 
 QSharedPointer<Parser> Parser::instance = nullptr;
 
-Parser& Parser::getInstance()
+Parser &Parser::getInstance()
 {
     if (!instance)
         instance = QSharedPointer<Parser>(new Parser);
@@ -16,5 +16,5 @@ Parser& Parser::getInstance()
 Parser::Parser(QObject *parent)
     : SPL::Parser(parent)
 {
-    connect(this,&Parser::packetGenerated,&DataStorage::getInstance(),&DataStorage::newPacket);
+    connect(this, &Parser::packetGenerated, &DataStorage::getInstance(), &DataStorage::newPacket);
 }

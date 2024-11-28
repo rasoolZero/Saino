@@ -5,19 +5,19 @@ static int currentSize = 0;
 
 void LED::updateStyle()
 {
-    switch(current){
-        case StateOk:
-        default:
-            setStyleSheet(greenSS.arg(currentSize/2));
+    switch (current) {
+    case StateOk:
+    default:
+        setStyleSheet(greenSS.arg(currentSize / 2));
         break;
-        case StateError:
-            setStyleSheet(redSS.arg(currentSize/2));
+    case StateError:
+        setStyleSheet(redSS.arg(currentSize / 2));
         break;
     }
 }
 
-LED::LED(QWidget *parent) :
-    QLabel(parent)
+LED::LED(QWidget *parent)
+    : QLabel(parent)
 {
     setState(false);
 }
@@ -35,9 +35,7 @@ void LED::setState(bool state)
 
 void LED::resizeEvent(QResizeEvent *event)
 {
-    currentSize = std::min(event->size().height(),event->size().width());
-    this->resize(currentSize,currentSize);
+    currentSize = std::min(event->size().height(), event->size().width());
+    this->resize(currentSize, currentSize);
     updateStyle();
 }
-
-

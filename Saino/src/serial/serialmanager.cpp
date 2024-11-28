@@ -44,12 +44,11 @@ QString SerialManager::getPort() const
 
 SerialManager::SerialManager(QObject *parent)
     : QObject{parent}
-{
-}
+{}
 
 SerialManager &SerialManager::getInstance()
 {
-    if(!instance)
+    if (!instance)
         instance = QSharedPointer<SerialManager>(new SerialManager);
     return *instance;
 }
@@ -59,28 +58,27 @@ QList<QSerialPortInfo> SerialManager::getPorts()
     return QSerialPortInfo::availablePorts();
 }
 
-QList<qint32> SerialManager::getBaudRates(){
+QList<qint32> SerialManager::getBaudRates()
+{
     return QSerialPortInfo::standardBaudRates();
 }
 
-const QList<QSerialPort::Parity> &SerialManager::getParities(){
+const QList<QSerialPort::Parity> &SerialManager::getParities()
+{
     return parities;
 }
 
-const QList<QSerialPort::StopBits> &SerialManager::getStopbits(){
+const QList<QSerialPort::StopBits> &SerialManager::getStopbits()
+{
     return stopbits;
 }
 
 QSharedPointer<SerialManager> SerialManager::instance;
-QList<QSerialPort::Parity> SerialManager::parities = {
-    QSerialPort::NoParity,
-    QSerialPort::EvenParity,
-    QSerialPort::OddParity,
-    QSerialPort::SpaceParity,
-    QSerialPort::MarkParity
-};
-QList<QSerialPort::StopBits> SerialManager::stopbits ={
-    QSerialPort::OneStop,
-    QSerialPort::OneAndHalfStop,
-    QSerialPort::TwoStop
-};
+QList<QSerialPort::Parity> SerialManager::parities = {QSerialPort::NoParity,
+                                                      QSerialPort::EvenParity,
+                                                      QSerialPort::OddParity,
+                                                      QSerialPort::SpaceParity,
+                                                      QSerialPort::MarkParity};
+QList<QSerialPort::StopBits> SerialManager::stopbits = {QSerialPort::OneStop,
+                                                        QSerialPort::OneAndHalfStop,
+                                                        QSerialPort::TwoStop};

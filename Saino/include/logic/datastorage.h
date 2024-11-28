@@ -13,7 +13,7 @@ class DataStorage : public QObject
     static QSharedPointer<DataStorage> instance;
     explicit DataStorage(QObject *parent = nullptr);
     DataStorage(const DataStorage &other) = delete;
-    DataStorage& operator=(const DataStorage &other) = delete;
+    DataStorage &operator=(const DataStorage &other) = delete;
     QList<SPL::Packet> packets;
 
 public:

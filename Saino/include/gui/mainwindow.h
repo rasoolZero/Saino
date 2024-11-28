@@ -33,9 +33,13 @@ private:
     void updateDetailTables(SPL::Packet &packet);
     void updateMainIndicators(SPL::Packet &packet);
     void resetUI();
-    QMap<int,QcItem*> gaugeLabels;
-    QMap<int,QcItem*> gaugeNeedles;
-    const QVector<ids> gaugeIDs = {ids::OIL_PRESSURE,ids::OIL_TEMPERATURE,ids::FUEL,ids::TORQUE,ids::MOTOR_SPEED};
+    QMap<int, QcItem *> gaugeLabels;
+    QMap<int, QcItem *> gaugeNeedles;
+    const QVector<ids> gaugeIDs = {ids::OIL_PRESSURE,
+                                   ids::OIL_TEMPERATURE,
+                                   ids::FUEL,
+                                   ids::TORQUE,
+                                   ids::MOTOR_SPEED};
 
 private slots:
     void openConfig();
