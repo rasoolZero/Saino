@@ -75,13 +75,14 @@ allInfo = {
 index = 0
 
 #define parameters here
-TOTAL_PACKETS = 300
-BAD_CHECKSUM_INTERVAL = -1
-NOISE_IN_PACKET_INTERVAL = -1
-MISS_ONE_FIELD_IN_PACKET = False
-SEND_DATA_IN_BYTES = False
-SEND_DATA_RANDOM_DATA = True
-SEND_NOISE = False
+TOTAL_PACKETS = 10000
+BAD_CHECKSUM_INTERVAL = 11
+NOISE_IN_PACKET_INTERVAL = 13
+MISS_ONE_FIELD_IN_PACKET = True
+SEND_DATA_IN_BYTES = True
+SEND_DATA_RANDOM_DATA = False
+SEND_NOISE = True
+DECIMAL_DATA = True
 
 class PacketData:
     def __init__(self,id = 0x1, miss = False):
@@ -96,6 +97,8 @@ class PacketData:
             if isError:
                 max = 2
             value = index % (max - min) + min
+            if not isError and value != max and DECIMAL_DATA:
+                value += random.random()
         if miss and MISS_ONE_FIELD_IN_PACKET:
             value = max+1
         self.factor = random.randint(0,100)
@@ -103,7 +106,7 @@ class PacketData:
             self.factor = 1
         self.data = value*self.factor
     def tobytes(self) -> bytearray:
-        return bytearray([self.id,self.reserve])+bytearray(self.data.to_bytes(4,'little'))+bytearray(self.factor.to_bytes(4,'little'))
+        return bytearray([self.id,self.reserve])+bytearray(int(self.data).to_bytes(4,'little'))+bytearray(self.factor.to_bytes(4,'little'))
         
 
 class Packet:
@@ -159,6 +162,8 @@ def open_port(portName : serial.tools.list_ports_common.ListPortInfo) -> serial.
 
 
 def run_test(ser : serial.Serial):
+    if SEND_NOISE:
+        ser.write(bytearray([2]*20001))
     for i in range(TOTAL_PACKETS):
         global index
         index = i
