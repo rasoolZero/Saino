@@ -15,9 +15,11 @@ SOURCES += \
     parser.cpp
 
 HEADERS += \
-    include/common.h \
-    include/packet.h \
-    include/parser.h
+    include/SPL/common.h \
+    include/SPL/packet.h \
+    include/SPL/parser.h
+
+INCLUDEPATH += include/SPL
 
 # Default rules for deployment.
 unix {

@@ -15,7 +15,6 @@ SOURCES += \
     led.cpp \
     main.cpp \
     mainwindow.cpp \
-    packet.cpp \
     parser.cpp \
     qcgaugewidget.cpp \
     serialcontroller.cpp \
@@ -27,7 +26,6 @@ HEADERS += \
     excelhelper.h \
     led.h \
     mainwindow.h \
-    packet.h \
     parser.h \
     qcgaugewidget.h \
     serialcontroller.h \
@@ -38,7 +36,7 @@ FORMS += \
     mainwindow.ui
 
 # SainoPacketLib
-include(../SainoPacketLib/SainoPacketLib.pri)
+    include(../SainoPacketLib/SainoPacketLib.pri)
 
 # QXlsx code for Application Qt project
 QXLSX_PARENTPATH=../QXlsx
