@@ -37,6 +37,9 @@ FORMS += \
     config.ui \
     mainwindow.ui
 
+# SainoPacketLib
+include(../SainoPacketLib/SainoPacketLib.pri)
+
 # QXlsx code for Application Qt project
 QXLSX_PARENTPATH=../QXlsx
 QXLSX_HEADERPATH=../QXlsx/header/

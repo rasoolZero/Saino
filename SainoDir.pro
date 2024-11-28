@@ -1,5 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    Saino \
-    QXlsx
+    SainoPacketLib \
+    QXlsx \
+    Saino
+
+Saino.depends = QXlsx SainoPacketLib
