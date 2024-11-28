@@ -1,12 +1,12 @@
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef SPL_PARSER_H
+#define SPL_PARSER_H
 
 #include <QObject>
 #include <QSharedPointer>
 #include "common.h"
 #include "packet.h"
 
-namespace SainoPacket {
+namespace SPL {
 class Parser : public QObject
 {
     Q_OBJECT
@@ -25,5 +25,5 @@ public:
 signals:
     void packetGenerated(Packet packet);
 };
-} // namespace SainoPacket
-#endif // PARSER_H
+} // namespace SPL
+#endif // SPL_PARSER_H

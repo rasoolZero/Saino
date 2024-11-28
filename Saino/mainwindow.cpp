@@ -25,7 +25,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::newPacket(Packet packet)
+void MainWindow::newPacket(SPL::Packet packet)
 {
     updateDetailTables(packet);
     updateMainIndicators(packet);
@@ -41,9 +41,9 @@ void MainWindow::setupMenuBar()
 
 void MainWindow::setupGauge()
 {
-    using ids = DataStorage::DataID;
+    using ids = SPL::DataID;
     QcGaugeWidget* const allGauges[] = {ui->gauge1,ui->gauge2,ui->gauge3,ui->gauge4,ui->gauge5};
-    auto info = DataStorage::getInstance().getInfo();
+    auto info = SPL::allInfo;
     int i=0;
     QColor mainColor(0xef,0xf0,0xf1);
     QColor accent(0x3d,0xae,0xe9);
@@ -76,13 +76,12 @@ void MainWindow::setupGauge()
 
 void MainWindow::setupTables()
 {
-    const DataStorage& instance = DataStorage::getInstance();
-    const auto & allInfo = instance.getInfo();
+    const auto &allInfo = SPL::allInfo;
 
     auto tblError = this->ui->tblError;
     auto tblValue = this->ui->tblValue;
 
-    auto allErrors = instance.allErrorCodes();
+    auto allErrors = SPL::allErrorCodes();
     tblError->setRowCount(allErrors.size());
     int i=0;
     foreach(auto&errorCode,allErrors){
@@ -92,7 +91,7 @@ void MainWindow::setupTables()
     }
     tblError->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    auto allDataCodes = instance.allDataCodes();
+    auto allDataCodes = SPL::allDataCodes();
     tblValue->setRowCount(allDataCodes.size());
     i=0;
     foreach(auto&dataCode,allDataCodes){
@@ -103,25 +102,23 @@ void MainWindow::setupTables()
     tblValue->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
-void MainWindow::updateDetailTables(Packet &packet)
+void MainWindow::updateDetailTables(SPL::Packet &packet)
 {
-    const DataStorage& instance = DataStorage::getInstance();
-    const auto & allInfo = instance.getInfo();
+    const auto &allInfo = SPL::allInfo;
     auto tblError = this->ui->tblError;
     auto tblValue = this->ui->tblValue;
-    auto allErrors = instance.allErrorCodes();
-    auto allDataCodes = instance.allDataCodes();
+    auto allErrors = SPL::allErrorCodes();
+    auto allDataCodes = SPL::allDataCodes();
     foreach(const auto& packetData,packet.getAllPackets()){
         auto id = packetData.getId();
         auto value = packetData.getValue();
         auto name = allInfo[id].name;
-        if(allErrors.contains(static_cast<DataStorage::DataID>(id))){
+        if (allErrors.contains(static_cast<SPL::DataID>(id))) {
             auto items = tblError->findItems(name,Qt::MatchExactly);
             auto rowIndex = tblError->row(items[0]);
             QString str = static_cast<bool>(value)?"Error":"Ok";
             tblError->item(rowIndex,1)->setText(QString(str));
-        }
-        else if(allDataCodes.contains(static_cast<DataStorage::DataID>(id))){
+        } else if (allDataCodes.contains(static_cast<SPL::DataID>(id))) {
             auto items = tblValue->findItems(name,Qt::MatchExactly);
             auto rowIndex = tblValue->row(items[0]);
             tblValue->item(rowIndex,1)->setText(QString::number(value));
@@ -129,11 +126,10 @@ void MainWindow::updateDetailTables(Packet &packet)
     }
 }
 
-void MainWindow::updateMainIndicators(Packet &packet)
+void MainWindow::updateMainIndicators(SPL::Packet &packet)
 {
-    using ids = DataStorage::DataID;
-    const DataStorage& instance = DataStorage::getInstance();
-    auto allErrors = instance.allErrorCodes();
+    using ids = SPL::DataID;
+    auto allErrors = SPL::allErrorCodes();
     this->ui->ledLast->setState(false);
     foreach(const auto& packetData,packet.getAllPackets()){
         auto id = packetData.getId();

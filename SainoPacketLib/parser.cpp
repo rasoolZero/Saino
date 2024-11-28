@@ -3,13 +3,13 @@
 #include <QMetaType>
 #include "packet.h"
 
-void SainoPacket::Parser::reset()
+void SPL::Parser::reset()
 {
     msgCounter = 0;
     totalBytes.clear();
 }
 
-void SainoPacket::Parser::parseData(QByteArray data)
+void SPL::Parser::parseData(QByteArray data)
 {
     qDebug() << __FUNCTION__ << "\n" << data;
     static const auto header = Packet::header;
@@ -60,13 +60,13 @@ void SainoPacket::Parser::parseData(QByteArray data)
     }
 }
 
-SainoPacket::Parser::Parser(QObject *parent)
+SPL::Parser::Parser(QObject *parent)
     : QObject(parent)
 {
     qRegisterMetaType<Packet>("Packet");
 }
 
-bool SainoPacket::Parser::isMsgcounterValid(msgcounter_t newMsgCounter)
+bool SPL::Parser::isMsgcounterValid(msgcounter_t newMsgCounter)
 {
     const auto maxMsgCounter = std::numeric_limits<msgcounter_t>::max();
     return newMsgCounter >= this->msgCounter

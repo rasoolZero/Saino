@@ -1,13 +1,13 @@
 #include "packet.h"
 #include <QDebug>
 
-qsizetype SainoPacket::PacketData::dataSize()
+qsizetype SPL::PacketData::dataSize()
 {
     return sizeof(PacketData::data) + sizeof(PacketData::factor) + sizeof(PacketData::id)
            + sizeof(PacketData::reserve);
 }
 
-SainoPacket::checksum_t SainoPacket::Packet::calculateChecksum(const QByteArray &bytes)
+SPL::checksum_t SPL::Packet::calculateChecksum(const QByteArray &bytes)
 {
     const qsizetype startIndex = header.size();
     checksum_t checksum = 0;
@@ -19,7 +19,7 @@ SainoPacket::checksum_t SainoPacket::Packet::calculateChecksum(const QByteArray 
     return checksum;
 }
 
-void SainoPacket::Packet::evaluatePacketData(const QByteArray &bytes)
+void SPL::Packet::evaluatePacketData(const QByteArray &bytes)
 {
     static const auto packetDataSize = PacketData::dataSize();
     msgCounter = bytes[header.size()];
@@ -39,7 +39,7 @@ void SainoPacket::Packet::evaluatePacketData(const QByteArray &bytes)
     }
 }
 
-void SainoPacket::Packet::removeBadData()
+void SPL::Packet::removeBadData()
 {
     QList<PacketData>::iterator it = allPacketData.begin();
     while (it != allPacketData.end()) {
@@ -58,17 +58,17 @@ void SainoPacket::Packet::removeBadData()
     }
 }
 
-SainoPacket::msgcounter_t SainoPacket::Packet::getMsgCounter() const
+SPL::msgcounter_t SPL::Packet::getMsgCounter() const
 {
     return msgCounter;
 }
 
-const QList<SainoPacket::PacketData> &SainoPacket::Packet::getAllPackets()
+const QList<SPL::PacketData> &SPL::Packet::getAllPackets()
 {
     return this->allPacketData;
 }
 
-SainoPacket::Packet::Packet(const QByteArray &bytes)
+SPL::Packet::Packet(const QByteArray &bytes)
 {
     auto actualChecksumBytes = bytes.mid(bytes.size() - footer.size() - sizeof(checksum_t),
                                          sizeof(checksum_t));
@@ -80,37 +80,37 @@ SainoPacket::Packet::Packet(const QByteArray &bytes)
     removeBadData();
 }
 
-SainoPacket::data_t SainoPacket::PacketData::getData() const
+SPL::data_t SPL::PacketData::getData() const
 {
     return data;
 }
 
-SainoPacket::factor_t SainoPacket::PacketData::getFactor() const
+SPL::factor_t SPL::PacketData::getFactor() const
 {
     return factor;
 }
 
-SainoPacket::id_t SainoPacket::PacketData::getId() const
+SPL::id_t SPL::PacketData::getId() const
 {
     return id;
 }
 
-SainoPacket::reserve_t SainoPacket::PacketData::getReserve() const
+SPL::reserve_t SPL::PacketData::getReserve() const
 {
     return reserve;
 }
 
-qreal SainoPacket::PacketData::getValue() const
+qreal SPL::PacketData::getValue() const
 {
     return value;
 }
 
-bool SainoPacket::PacketData::operator==(id_t id)
+bool SPL::PacketData::operator==(id_t id)
 {
     return this->id == id;
 }
 
-SainoPacket::PacketData::PacketData(data_t data, factor_t factor, id_t id, reserve_t reserve)
+SPL::PacketData::PacketData(data_t data, factor_t factor, id_t id, reserve_t reserve)
     : data(std::move(data))
     , factor(std::move(factor))
     , id(std::move(id))

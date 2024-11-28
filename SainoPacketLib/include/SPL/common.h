@@ -1,8 +1,8 @@
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef SPL_COMMON_H
+#define SPL_COMMON_H
 #include <QMap>
 
-namespace SainoPacket{
+namespace SPL {
 
 enum DataID {
     OIL_PRESSURE = 0x01,
@@ -52,9 +52,13 @@ struct DataInfo
     data_t minValue;
     data_t maxValue;
 };
-    typedef QMap<id_t,DataInfo> infomap;
 
-    const extern infomap allInfo;
-}
+typedef QMap<id_t, DataInfo> infomap;
 
-#endif // COMMON_H
+const extern infomap allInfo;
+QVector<DataID> allDataCodes();
+QVector<DataID> allErrorCodes();
+
+} // namespace SPL
+
+#endif // SPL_COMMON_H

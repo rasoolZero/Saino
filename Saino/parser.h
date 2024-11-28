@@ -3,9 +3,10 @@
 
 #include <QObject>
 #include <QSharedPointer>
-#include "packet.h"
+#include <SPL/packet.h>
+#include <SPL/parser.h>
 
-class Parser : public QObject
+class Parser : public SPL::Parser
 {
     Q_OBJECT
 
@@ -14,17 +15,7 @@ class Parser : public QObject
     Parser(const Parser &other) = delete;
     Parser& operator=(const Parser &other) = delete;
 
-    bool isMsgcounterValid(msgcounter_t newMsgCounter);
-
-    msgcounter_t msgCounter = 0;
-    QByteArray totalBytes;
-    const qsizetype maxSize = 20000;
 public:
-    static Parser& getInstance();
-    void reset();
-    void parseData(QByteArray data);
-
-signals:
-    void packetGenerated(Packet packet);
+    static Parser &getInstance();
 };
 #endif // PARSER_H

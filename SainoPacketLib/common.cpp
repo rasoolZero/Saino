@@ -1,8 +1,8 @@
 #include "common.h"
 
-static SainoPacket::infomap allInfoHelper()
+static SPL::infomap allInfoHelper()
 {
-    using namespace SainoPacket;
+    using namespace SPL;
     infomap allInfo;
 
     allInfo[OIL_PRESSURE] = {false, "OIL PRESSURE", 0, 1000};
@@ -40,4 +40,22 @@ static SainoPacket::infomap allInfoHelper()
     return allInfo;
 }
 
-const SainoPacket::infomap SainoPacket::allInfo = allInfoHelper();
+const SPL::infomap SPL::allInfo = allInfoHelper();
+
+QVector<SPL::DataID> SPL::allErrorCodes()
+{
+    QVector<DataID> result;
+    for (DataID i = DataID::OIL_PRESSURE_SENSOR_ERROR; i <= DataID::AIR_TEMP_SENSOR_ERROR;
+         i = static_cast<DataID>(static_cast<int>(i) + 1))
+        result.push_back(i);
+    return result;
+}
+
+QVector<SPL::DataID> SPL::allDataCodes()
+{
+    QVector<DataID> result;
+    for (DataID i = DataID::OIL_PRESSURE; i <= DataID::AIR_TEMP;
+         i = static_cast<DataID>(static_cast<int>(i) + 1))
+        result.push_back(i);
+    return result;
+}
