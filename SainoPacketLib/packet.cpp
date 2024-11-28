@@ -120,10 +120,12 @@ SPL::PacketData::PacketData(data_t data, factor_t factor, id_t id, reserve_t res
     if (factor == 0)
         factor = 1;
     value = static_cast<qreal>(data) / static_cast<qreal>(factor);
+#ifdef QT_DEBUG
     qDebug() << __FUNCTION__;
     qDebug() << "id:" << id;
     qDebug() << "reserve:" << reserve;
     qDebug() << "data:" << data;
     qDebug() << "factor:" << factor;
     qDebug() << "VALUE:" << value;
+#endif
 }

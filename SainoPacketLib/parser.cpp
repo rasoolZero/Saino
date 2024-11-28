@@ -11,14 +11,15 @@ void SPL::Parser::reset()
 
 void SPL::Parser::parseData(QByteArray data)
 {
-    qDebug() << __FUNCTION__ << "\n" << data;
     static const auto header = Packet::header;
     static const auto footer = Packet::footer;
     static const auto minimumSize = Packet::minimumSize;
     if (totalBytes.size() >= maxSize)
         totalBytes.truncate(maxSize / 2);
     totalBytes += data;
+#ifdef QT_DEBUG
     qDebug() << "total bytes:" << totalBytes;
+#endif
     if (totalBytes.size() < minimumSize)
         return;
     auto headerIndex = totalBytes.indexOf(header);
@@ -40,17 +41,22 @@ void SPL::Parser::parseData(QByteArray data)
                 QByteArray packetData = totalBytes.mid(headerIndex,
                                                        footerIndex - headerIndex + footer.size());
 
+#ifdef QT_DEBUG
                 qDebug() << "Extracted packet data:" << packetData;
-
+#endif
                 try {
                     Packet packet(packetData);
                     emit packetGenerated(packet);
                     totalBytes.remove(0, footerIndex + 1);
                     msgCounter = newMsgCounter + 1;
                 } catch (const BadChecksum &) {
+#ifdef QT_DEBUG
                     qDebug() << "Bad Checksum";
+#endif
                 }
+#ifdef QT_DEBUG
                 qDebug() << "total bytes:" << totalBytes;
+#endif
                 break;
             }
             footerIndex = totalBytes.indexOf(footer, footerIndex + 1);

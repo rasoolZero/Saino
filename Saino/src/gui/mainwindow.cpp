@@ -47,12 +47,9 @@ void MainWindow::setupGauge()
     int i = 0;
     QColor mainColor(0xef, 0xf0, 0xf1);
     QColor accent(0x3d, 0xae, 0xe9);
-    auto background = QColor(0x31, 0x36, 0x3b).lighter(120);
+    auto background = QColor(0x31, 0x36, 0x3b).lighter(150);
     for (QcGaugeWidget *gauge : allGauges) {
-        auto bg2 = gauge->addBackground(92);
-        bg2->clearrColors();
-        bg2->addColor(0.0f, accent);
-        auto bg = gauge->addBackground(90);
+        auto bg = gauge->addBackground(95);
         bg->clearrColors();
         bg->addColor(0.0f, background);
         auto values = gauge->addValues(80);
