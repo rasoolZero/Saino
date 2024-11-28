@@ -6,7 +6,7 @@ QT += core
 QT += gui-private
 
 # TODO: Define your C++ version. c++14, c++17, etc.
-CONFIG += c++11
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
