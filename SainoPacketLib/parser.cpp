@@ -63,6 +63,8 @@ void SPL::Parser::parseData(QByteArray data)
 SPL::Parser::Parser(QObject *parent)
     : QObject(parent)
 {
+    this->msgCounter = 0;
+    this->totalBytes.clear();
     qRegisterMetaType<Packet>("Packet");
 }
 

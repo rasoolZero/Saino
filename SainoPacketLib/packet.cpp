@@ -41,6 +41,7 @@ void SPL::Packet::evaluatePacketData(const QByteArray &bytes)
 
 void SPL::Packet::removeBadData()
 {
+    auto &allInfo = SPL::getInfo();
     QList<PacketData>::iterator it = allPacketData.begin();
     while (it != allPacketData.end()) {
         auto id = it->getId();

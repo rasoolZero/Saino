@@ -1,9 +1,11 @@
 #include "common.h"
 
-static SPL::infomap allInfoHelper()
+const SPL::infomap &SPL::getInfo()
 {
     using namespace SPL;
-    infomap allInfo;
+    static infomap allInfo;
+    if (allInfo.size())
+        return allInfo;
 
     allInfo[OIL_PRESSURE] = {false, "OIL PRESSURE", 0, 1000};
     allInfo[OIL_TEMPERATURE] = {false, "OIL TEMPERATURE", 0, 400};
@@ -39,8 +41,6 @@ static SPL::infomap allInfoHelper()
 
     return allInfo;
 }
-
-const SPL::infomap SPL::allInfo = allInfoHelper();
 
 QVector<SPL::DataID> SPL::allErrorCodes()
 {

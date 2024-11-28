@@ -55,10 +55,9 @@ struct DataInfo
 
 typedef QMap<id_t, DataInfo> infomap;
 
-const extern infomap allInfo;
 QVector<DataID> allDataCodes();
 QVector<DataID> allErrorCodes();
-
+const infomap &getInfo();
 } // namespace SPL
 
 #endif // SPL_COMMON_H

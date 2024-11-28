@@ -69,7 +69,7 @@ private:
     QList<PacketData> allPacketData;
 };
 
-Q_DECLARE_METATYPE(Packet)
 } // namespace SPL
+Q_DECLARE_METATYPE(SPL::Packet)
 
 #endif // SPL_PACKET_H

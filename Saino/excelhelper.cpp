@@ -15,7 +15,7 @@ ExcelHelper::ExcelHelper()
     const auto & allPackets = DataStorage::getInstance().getPackets();
     if(allPackets.size() == 0)
         EmptyStorage().raise();
-    const auto &allInfo = SPL::allInfo;
+    const auto &allInfo = SPL::getInfo();
     const auto &allErrorCodes = SPL::allErrorCodes();
     const auto &allDataCodes = SPL::allDataCodes();
     col = 1;
@@ -36,7 +36,7 @@ ExcelHelper::ExcelHelper()
 void ExcelHelper::save(const QString &filename)
 {
     const auto & allPackets = DataStorage::getInstance().getPackets();
-    const auto &allInfo = SPL::allInfo;
+    const auto &allInfo = SPL::getInfo();
 
     int row = 2;
     foreach(auto packet,allPackets){

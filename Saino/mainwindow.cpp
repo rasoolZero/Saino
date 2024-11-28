@@ -43,7 +43,7 @@ void MainWindow::setupGauge()
 {
     using ids = SPL::DataID;
     QcGaugeWidget* const allGauges[] = {ui->gauge1,ui->gauge2,ui->gauge3,ui->gauge4,ui->gauge5};
-    auto info = SPL::allInfo;
+    auto info = SPL::getInfo();
     int i=0;
     QColor mainColor(0xef,0xf0,0xf1);
     QColor accent(0x3d,0xae,0xe9);
@@ -76,7 +76,7 @@ void MainWindow::setupGauge()
 
 void MainWindow::setupTables()
 {
-    const auto &allInfo = SPL::allInfo;
+    const auto &allInfo = SPL::getInfo();
 
     auto tblError = this->ui->tblError;
     auto tblValue = this->ui->tblValue;
@@ -104,7 +104,7 @@ void MainWindow::setupTables()
 
 void MainWindow::updateDetailTables(SPL::Packet &packet)
 {
-    const auto &allInfo = SPL::allInfo;
+    const auto &allInfo = SPL::getInfo();
     auto tblError = this->ui->tblError;
     auto tblValue = this->ui->tblValue;
     auto allErrors = SPL::allErrorCodes();
