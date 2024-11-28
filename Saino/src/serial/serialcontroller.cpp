@@ -69,12 +69,11 @@ PortReader::PortReader(QSharedPointer<QSerialPort> port, QObject *parent)
 void PortReader::process()
 {
     auto &instance = Parser::getInstance();
-    auto minimumSize = SPL::Packet::minimumSize;
 #ifdef QT_DEBUG
     int counter = 1;
 #endif
     while (port->isOpen()) {
-        if (port->waitForReadyRead(30) && port->bytesAvailable() >= minimumSize) {
+        if (port->waitForReadyRead(5)) {
             instance.parseData(port->readAll());
 #ifdef QT_DEBUG
             qDebug() << "COUNTER:" << counter++;
