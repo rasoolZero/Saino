@@ -34,7 +34,7 @@
         <item>
          <layout class="QVBoxLayout" name="vrtlay1">
           <item>
-           <widget class="QcGaugeWidget" name="gauge1" native="true">
+           <widget class="CustomGauge" name="gauge1" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -44,7 +44,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QcGaugeWidget" name="gauge2" native="true">
+           <widget class="CustomGauge" name="gauge2" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -58,7 +58,7 @@
         <item>
          <layout class="QVBoxLayout" name="vrtlay2">
           <item>
-           <widget class="QcGaugeWidget" name="gauge3" native="true">
+           <widget class="CustomGauge" name="gauge3" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -68,7 +68,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QcGaugeWidget" name="gauge4" native="true">
+           <widget class="CustomGauge" name="gauge4" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -82,7 +82,7 @@
         <item>
          <layout class="QVBoxLayout" name="vrtlay3">
           <item>
-           <widget class="QcGaugeWidget" name="gauge5" native="true">
+           <widget class="CustomGauge" name="gauge5" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -536,15 +536,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QcGaugeWidget</class>
-   <extends>QWidget</extends>
-   <header>gui/qcgaugewidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>LED</class>
    <extends>QWidget</extends>
    <header>gui/led.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CustomGauge</class>
+   <extends>QWidget</extends>
+   <header>gui/customgauge.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -89,12 +89,6 @@ QList<QcItem *> QcGaugeWidget::items()
     return mItems;
 }
 
-QcGaugeWidget::~QcGaugeWidget()
-{
-    foreach (auto itemPtr, this->mItems)
-        delete itemPtr;
-}
-
 void QcGaugeWidget::paintEvent(QPaintEvent * /*paintEvt*/)
 {
     QPainter painter(this);

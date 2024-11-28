@@ -70,12 +70,10 @@ public:
     QList<QcItem *> items();
     QList<QcItem *> mItems;
 
-    virtual ~QcGaugeWidget();
-
 signals:
 
 public slots:
-private:
+protected:
     void paintEvent(QPaintEvent *);
 };
 

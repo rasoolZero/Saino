@@ -42,32 +42,20 @@ void MainWindow::setupMenuBar()
 void MainWindow::setupGauge()
 {
     using ids = SPL::DataID;
-    QcGaugeWidget *const allGauges[] = {ui->gauge1, ui->gauge2, ui->gauge3, ui->gauge4, ui->gauge5};
+    CustomGauge *const allGauges[] = {ui->gauge1, ui->gauge2, ui->gauge3, ui->gauge4, ui->gauge5};
     auto info = SPL::getInfo();
     int i = 0;
     QColor mainColor(0xef, 0xf0, 0xf1);
     QColor accent(0x3d, 0xae, 0xe9);
     auto background = QColor(0x31, 0x36, 0x3b).lighter(150);
-    for (QcGaugeWidget *gauge : allGauges) {
-        auto bg = gauge->addBackground(95);
-        bg->clearrColors();
-        bg->addColor(0.0f, background);
-        auto values = gauge->addValues(80);
-        values->setValueRange(info[gaugeIDs[i]].minValue, info[gaugeIDs[i]].maxValue);
-        values->setStep((info[gaugeIDs[i]].maxValue - info[gaugeIDs[i]].minValue) / 10);
-        values->setColor(mainColor);
-        auto namelabel = gauge->addLabel(40);
-        namelabel->setText(info[gaugeIDs[i]].name);
-        namelabel->setColor(mainColor);
-        auto needle = gauge->addNeedle(70);
-        needle->setValueRange(info[gaugeIDs[i]].minValue, info[gaugeIDs[i]].maxValue);
-        needle->setColor(accent);
-        needle->setNeedle(needle->TriangleNeedle);
-        gaugeNeedles[i] = needle;
-        auto label = gauge->addLabel(20);
-        label->setText("0");
-        label->setColor(mainColor);
-        gaugeLabels[i] = label;
+    for (CustomGauge *gauge : allGauges) {
+        gauge->setGaugeProperties(info[gaugeIDs[i]].name,
+                                  info[gaugeIDs[i]].minValue,
+                                  info[gaugeIDs[i]].maxValue,
+                                  mainColor,
+                                  accent,
+                                  background);
+        this->gauges[i] = gauge;
         i++;
     }
 }
@@ -135,10 +123,7 @@ void MainWindow::updateMainIndicators(SPL::Packet &packet)
         auto value = packetData.getValue();
         if (gaugeIDs.contains(idEnum)) {
             auto index = gaugeIDs.indexOf(idEnum);
-            QcNeedleItem *needle = dynamic_cast<QcNeedleItem *>(gaugeNeedles[index]);
-            needle->setCurrentValue(value);
-            QcLabelItem *label = dynamic_cast<QcLabelItem *>(gaugeLabels[index]);
-            label->setText(QString::number(value));
+            this->gauges[index]->setValue(value);
         } else if (allErrors.contains(idEnum) && static_cast<bool>(value)) {
             this->ui->ledLast->setState(true);
             this->ui->ledAll->setState(true);
@@ -152,13 +137,8 @@ void MainWindow::resetUI()
         this->ui->tblError->item(i, 1)->setText("NaN");
     for (int i = 0; i < this->ui->tblValue->rowCount(); i++)
         this->ui->tblValue->item(i, 1)->setText("NaN");
-    foreach (auto ptr, this->gaugeLabels) {
-        QcLabelItem *label = dynamic_cast<QcLabelItem *>(ptr);
-        label->setText("0");
-    }
-    foreach (auto ptr, this->gaugeNeedles) {
-        QcNeedleItem *needle = dynamic_cast<QcNeedleItem *>(ptr);
-        needle->setCurrentValue(0);
+    foreach (auto ptr, this->gauges) {
+        ptr->setValue(0);
     }
     this->ui->ledAll->setState(false);
     this->ui->ledLast->setState(false);

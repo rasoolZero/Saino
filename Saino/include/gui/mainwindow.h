@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QMap>
-#include "gui/qcgaugewidget.h"
+#include "gui/customgauge.h"
 #include "logic/datastorage.h"
 #include <SPL/common.h>
 #include <SPL/packet.h>
@@ -33,8 +33,7 @@ private:
     void updateDetailTables(SPL::Packet &packet);
     void updateMainIndicators(SPL::Packet &packet);
     void resetUI();
-    QMap<int, QcItem *> gaugeLabels;
-    QMap<int, QcItem *> gaugeNeedles;
+    QMap<int, CustomGauge *> gauges;
     const QVector<ids> gaugeIDs = {ids::OIL_PRESSURE,
                                    ids::OIL_TEMPERATURE,
                                    ids::FUEL,
