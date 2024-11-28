@@ -28,7 +28,8 @@ SOURCES += \
     $${SRC_LOGIC}/parser.cpp \
     $${SRC_GUI}/qcgaugewidget.cpp \
     $${SRC_SERIAL}/serialcontroller.cpp \
-    $${SRC_SERIAL}/serialmanager.cpp
+    $${SRC_SERIAL}/serialmanager.cpp \
+    src/gui/customgauge.cpp
 
 HEADERS += \
     $${INCLUDE_GUI}/config.h \
@@ -39,7 +40,8 @@ HEADERS += \
     $${INCLUDE_LOGIC}/parser.h \
     $${INCLUDE_GUI}/qcgaugewidget.h \
     $${INCLUDE_SERIAL}/serialcontroller.h \
-    $${INCLUDE_SERIAL}/serialmanager.h
+    $${INCLUDE_SERIAL}/serialmanager.h \
+    include/gui/customgauge.h
 
 INCLUDEPATH += include/
 
