@@ -20,7 +20,7 @@ public:
     ExcelHelper &operator=(const ExcelHelper &other) = delete;
 
     ExcelHelper();
-    void save(const QString &fileName);
+    bool save(const QString &fileName);
 
 private:
     QXlsx::Document xlsx;

@@ -217,8 +217,7 @@ void MainWindow::saveExcel()
                                                         tr("Excel (*.xlsx)"));
         if (filename.isEmpty())
             return;
-        saver.save(filename);
-        saved = true;
+        saved = saver.save(filename);
     } catch (const EmptyStorage &) {
         QMessageBox::critical(this, "No Data", "No data in the storage to be saved");
     } catch (const QException &e) {
@@ -226,4 +225,6 @@ void MainWindow::saveExcel()
     }
     if (saved)
         QMessageBox::information(this, "Success", "Data has been saved in excel file");
+    else
+        QMessageBox::critical(this, "Error", "Could not save the excel file");
 }

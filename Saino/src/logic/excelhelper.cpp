@@ -32,7 +32,7 @@ ExcelHelper::ExcelHelper()
     }
 }
 
-void ExcelHelper::save(const QString &filename)
+bool ExcelHelper::save(const QString &filename)
 {
     const auto &allPackets = DataStorage::getInstance().getPackets();
     const auto &allInfo = SPL::getInfo();
@@ -51,5 +51,5 @@ void ExcelHelper::save(const QString &filename)
         row++;
     }
     xlsx.autosizeColumnWidth(1, col);
-    xlsx.saveAs(filename);
+    return xlsx.saveAs(filename);
 }
