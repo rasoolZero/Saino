@@ -4,4 +4,4 @@ SUBDIRS += \
     SainoPacketLib \
     Saino
 
-Saino.depends = QXlsx SainoPacketLib
+Saino.depends = SainoPacketLib
