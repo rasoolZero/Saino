@@ -75,15 +75,15 @@ allInfo = {
 index = 0
 
 #define parameters here
-TOTAL_PACKETS = 10
+TOTAL_PACKETS = 1000
 BAD_CHECKSUM_INTERVAL = 11
 NOISE_IN_PACKET_INTERVAL = 13
 MISS_ONE_FIELD_IN_PACKET = True
-SEND_DATA_IN_BYTES = False
+SEND_DATA_IN_BYTES = True
 SEND_RANDOM_DATA_VALUE = False
-SEND_NOISE = False
+SEND_NOISE = True
 SEND_WHOLE_DATA = False  # more priority than SEND_DATA_IN_BYTES
-DECIMAL_DATA = False
+DECIMAL_DATA = True
 
 
 class PacketData:
@@ -167,7 +167,7 @@ def open_port(portName : serial.tools.list_ports_common.ListPortInfo) -> serial.
 
 def run_test(ser : serial.Serial):
     if SEND_NOISE:
-        ser.write(bytearray([2]*20001))
+        ser.write(bytearray([2]*19998))
     allData = bytearray()
     NOISE = bytearray([1,2,3,4,5])
     for i in range(TOTAL_PACKETS):
@@ -191,7 +191,7 @@ def run_test(ser : serial.Serial):
             ser.write(bytes)
             sleep(20/1000) 
         if SEND_NOISE and not SEND_WHOLE_DATA:
-            ser.write(bytearray([1,2,3,4,5,6])) # noise
+            ser.write(NOISE) # noise
     if SEND_WHOLE_DATA:
         print(allData)
         ser.write(allData)
