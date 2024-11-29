@@ -75,14 +75,16 @@ allInfo = {
 index = 0
 
 #define parameters here
-TOTAL_PACKETS = 10000
+TOTAL_PACKETS = 10
 BAD_CHECKSUM_INTERVAL = 11
 NOISE_IN_PACKET_INTERVAL = 13
 MISS_ONE_FIELD_IN_PACKET = True
-SEND_DATA_IN_BYTES = True
-SEND_DATA_RANDOM_DATA = False
-SEND_NOISE = True
-DECIMAL_DATA = True
+SEND_DATA_IN_BYTES = False
+SEND_RANDOM_DATA_VALUE = False
+SEND_NOISE = False
+SEND_WHOLE_DATA = False  # more priority than SEND_DATA_IN_BYTES
+DECIMAL_DATA = False
+
 
 class PacketData:
     def __init__(self,id = 0x1, miss = False):
@@ -91,7 +93,7 @@ class PacketData:
         isError,name,min,max = allInfo[self.id]
         value = None
         global index
-        if SEND_DATA_RANDOM_DATA:
+        if SEND_RANDOM_DATA_VALUE:
             value = random.randint(min,max)
         else:
             if isError:
@@ -105,6 +107,8 @@ class PacketData:
         if isError:
             self.factor = 1
         self.data = value*self.factor
+        if self.factor == 0:
+            self.data = value
     def tobytes(self) -> bytearray:
         return bytearray([self.id,self.reserve])+bytearray(int(self.data).to_bytes(4,'little'))+bytearray(self.factor.to_bytes(4,'little'))
         
@@ -164,6 +168,8 @@ def open_port(portName : serial.tools.list_ports_common.ListPortInfo) -> serial.
 def run_test(ser : serial.Serial):
     if SEND_NOISE:
         ser.write(bytearray([2]*20001))
+    allData = bytearray()
+    NOISE = bytearray([1,2,3,4,5])
     for i in range(TOTAL_PACKETS):
         global index
         index = i
@@ -172,16 +178,23 @@ def run_test(ser : serial.Serial):
         bytes = packet.tobytes()
         if (i % NOISE_IN_PACKET_INTERVAL) == 0 and (NOISE_IN_PACKET_INTERVAL != -1):
             bytes.insert(int(len(bytes)/2), random.randint(0,255))
-        if SEND_NOISE:
-            ser.write(bytearray([1,2,3,4,5,6])) # noise
-        if SEND_DATA_IN_BYTES:
+        if SEND_NOISE and not SEND_WHOLE_DATA:
+            ser.write(NOISE) # noise
+        if SEND_WHOLE_DATA:
+            allData+=bytes
+            if SEND_NOISE:
+                allData+=NOISE
+        elif SEND_DATA_IN_BYTES:
             for byte in bytes:
                 ser.write([byte])
         else:
             ser.write(bytes)
             sleep(20/1000) 
-        if SEND_NOISE:
+        if SEND_NOISE and not SEND_WHOLE_DATA:
             ser.write(bytearray([1,2,3,4,5,6])) # noise
+    if SEND_WHOLE_DATA:
+        print(allData)
+        ser.write(allData)
 
 def run():
     print("choose a com port:")
