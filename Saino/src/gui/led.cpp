@@ -36,6 +36,8 @@ LED::LED(QWidget *parent)
     : QWidget(parent)
 {
     setState(false);
+    updateStyle();
+    update();
 }
 
 void LED::setState(State state)
