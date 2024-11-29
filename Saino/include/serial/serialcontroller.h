@@ -2,6 +2,7 @@
 #define SERIALCONTROLLER_H
 
 #include <QException>
+#include <QMutex>
 #include <QObject>
 #include <QSerialPort>
 #include <QSharedPointer>
@@ -20,8 +21,11 @@ class PortReader : public QObject
 {
     Q_OBJECT
     const QSharedPointer<QSerialPort> port;
+    QMutex mLock;
 
 public:
+    void lock();
+    void unlock();
     explicit PortReader(QSharedPointer<QSerialPort> port, QObject *parent = nullptr);
 
 public slots:

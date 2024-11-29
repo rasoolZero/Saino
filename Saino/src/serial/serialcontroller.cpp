@@ -47,8 +47,11 @@ bool SerialController::connect()
 bool SerialController::disconnect()
 {
     if (port->isOpen()) {
+        reader.lock();
         port->close();
+        reader.unlock();
         readerThread.quit();
+
     } else
         return false;
     return true;
@@ -60,6 +63,16 @@ QString SerialController::error()
 }
 
 QSharedPointer<SerialController> SerialController::instance;
+
+void PortReader::lock()
+{
+    this->mLock.lock();
+}
+
+void PortReader::unlock()
+{
+    this->mLock.unlock();
+}
 
 PortReader::PortReader(QSharedPointer<QSerialPort> port, QObject *parent)
     : QObject{parent}
@@ -73,11 +86,13 @@ void PortReader::process()
     int counter = 1;
 #endif
     while (port->isOpen()) {
+        lock();
         if (port->waitForReadyRead(5)) {
             instance.parseData(port->readAll());
 #ifdef QT_DEBUG
             qDebug() << "COUNTER:" << counter++;
 #endif
         }
+        unlock();
     }
 }
