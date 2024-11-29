@@ -45,6 +45,8 @@ typedef quint32 factor_t;
 typedef quint8 id_t;
 typedef qint8 reserve_t;
 
+// holds info about all of protocol's data, including its type (error or value)
+// name, minimum and maximum value
 struct DataInfo
 {
     bool isError;
@@ -52,7 +54,7 @@ struct DataInfo
     data_t minValue;
     data_t maxValue;
 };
-
+// maps each id to its info (example: 0x01 is OIL PRESSURE)
 typedef QMap<id_t, DataInfo> infomap;
 
 QVector<DataID> allDataCodes();

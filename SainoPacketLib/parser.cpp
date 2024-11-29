@@ -9,7 +9,7 @@ void SPL::Parser::reset()
     totalBytes.clear();
 }
 
-void SPL::Parser::parseData(QByteArray data)
+void SPL::Parser::parseData(const QByteArray &data)
 {
     static const auto header = Packet::header;
     static const auto footer = Packet::footer;
@@ -69,7 +69,7 @@ SPL::Parser::Parser(QObject *parent)
     qRegisterMetaType<Packet>("Packet");
 }
 
-bool SPL::Parser::isMsgcounterValid(msgcounter_t newMsgCounter)
+bool SPL::Parser::isMsgcounterValid(msgcounter_t newMsgCounter) const
 {
     const auto maxMsgCounter = std::numeric_limits<msgcounter_t>::max();
     qDebug() << "msgcounter thershold:" << maxMsgCounter * (3.f / 4.f);

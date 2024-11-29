@@ -14,6 +14,9 @@ public:
     QException *clone() const override { return new BadChecksum(*this); }
 };
 
+// this function is used to convert byte arrays to other types
+// if the running system is big-endian, the bytes are reversed
+// since the dara received is in little-endian
 template<typename T>
 T byteArrayConvert(const QByteArray &bytes)
 {
@@ -25,6 +28,8 @@ T byteArrayConvert(const QByteArray &bytes)
     return *number;
 }
 
+// holds a single data field in a packet, contains data, factor, id and reserve
+// value is data/factor, if factor is 0, it'll be considered 1
 class PacketData
 {
     data_t data;
@@ -46,6 +51,7 @@ public:
     bool operator==(id_t id);
 };
 
+// holds data for a full packet, containing MsgCounter, id number and packet data
 class Packet
 {
 public:
@@ -55,12 +61,13 @@ public:
                                                  + sizeof(msgcounter_t) + sizeof(idnumber_t)
                                                  + sizeof(checksum_t) + PacketData::dataSize());
 
+    // can throw BadChecksum
     Packet(const QByteArray &bytes = {});
-    const QList<PacketData> &getAllPackets();
+    const QList<PacketData> &getAllPackets() const;
     msgcounter_t getMsgCounter() const;
 
 private:
-    checksum_t calculateChecksum(const QByteArray &bytes);
+    checksum_t calculateChecksum(const QByteArray &bytes) const;
     void evaluatePacketData(const QByteArray &bytes);
     void removeBadData();
 
@@ -70,6 +77,8 @@ private:
 };
 
 } // namespace SPL
+
+// packet might be used in signal/slots between threads
 Q_DECLARE_METATYPE(SPL::Packet)
 
 #endif // SPL_PACKET_H

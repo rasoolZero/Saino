@@ -11,7 +11,7 @@ class Parser : public QObject
 {
     Q_OBJECT
 
-    bool isMsgcounterValid(msgcounter_t newMsgCounter);
+    bool isMsgcounterValid(msgcounter_t newMsgCounter) const;
 
     msgcounter_t msgCounter = 0;
     QByteArray totalBytes;
@@ -19,8 +19,9 @@ class Parser : public QObject
 
 public:
     explicit Parser(QObject *parent = nullptr);
+    // sets msgCounter to 0 and clears totalBytes
     void reset();
-    void parseData(QByteArray data);
+    void parseData(const QByteArray &data);
     virtual ~Parser() = default;
 signals:
     void packetGenerated(Packet packet);
