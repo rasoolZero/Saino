@@ -2,6 +2,7 @@
 #define CUSTOMGAUGE_H
 #include "gui/qcgaugewidget.h"
 
+// custom gauge which uses QcGaugeWidget, has better and easier API
 class CustomGauge : public QcGaugeWidget
 {
 public:
@@ -11,7 +12,8 @@ public:
                             float max,
                             QColor textColor,
                             QColor accentColor,
-                            QColor backgroundColor);
+                            QColor backgroundColor,
+                            int valueRanges = 10);
     void setValue(float newValue);
 
 private:

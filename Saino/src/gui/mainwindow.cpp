@@ -45,10 +45,13 @@ void MainWindow::setupGauge()
     CustomGauge *const allGauges[] = {ui->gauge1, ui->gauge2, ui->gauge3, ui->gauge4, ui->gauge5};
     auto info = SPL::getInfo();
     int i = 0;
+
+    // these colors are based on dark.qss stylesheet
     QColor mainColor(0xef, 0xf0, 0xf1);
     QColor accent(0x3d, 0xae, 0xe9);
     auto background = QColor(0x31, 0x36, 0x3b).lighter(150);
     for (CustomGauge *gauge : allGauges) {
+        // set the properties of each gauge widget based on the data info
         gauge->setGaugeProperties(info[gaugeIDs[i]].name,
                                   info[gaugeIDs[i]].minValue,
                                   info[gaugeIDs[i]].maxValue,
@@ -60,13 +63,13 @@ void MainWindow::setupGauge()
     }
 }
 
-void MainWindow::setupTables()
+void MainWindow::setupErrorTable()
 {
     const auto &allInfo = SPL::getInfo();
-
     auto tblError = this->ui->tblError;
-    auto tblValue = this->ui->tblValue;
-
+    // get all of error codes, loop through each row
+    // set the 1st column to the error code's name
+    // set the 2nd column to NaN
     auto allErrors = SPL::allErrorCodes();
     tblError->setRowCount(allErrors.size());
     int i = 0;
@@ -76,10 +79,18 @@ void MainWindow::setupTables()
         ++i;
     }
     tblError->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+}
 
+void MainWindow::setupValueTable()
+{
+    auto tblValue = this->ui->tblValue;
+    const auto &allInfo = SPL::getInfo();
+    // get all of value codes, loop through each row
+    // set the 1st column to the value data's name
+    // set the 2nd column to NaN
     auto allDataCodes = SPL::allDataCodes();
     tblValue->setRowCount(allDataCodes.size());
-    i = 0;
+    int i = 0;
     foreach (auto &dataCode, allDataCodes) {
         tblValue->setItem(i, 0, new QTableWidgetItem(allInfo[dataCode].name));
         tblValue->setItem(i, 1, new QTableWidgetItem("NaN"));
@@ -88,26 +99,47 @@ void MainWindow::setupTables()
     tblValue->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
+void MainWindow::setupTables()
+{
+    setupErrorTable();
+    setupValueTable();
+}
+
+void MainWindow::updateValueTable(QString name, qreal value)
+{
+    // find the row containg the name and update second column
+    auto items = ui->tblValue->findItems(name, Qt::MatchExactly);
+    auto rowIndex = ui->tblValue->row(items[0]);
+    ui->tblValue->item(rowIndex, 1)->setText(QString::number(value));
+}
+
+void MainWindow::updateErrorTable(QString name, qreal value)
+{
+    // find the row containg the name and update second column
+    auto items = ui->tblError->findItems(name, Qt::MatchExactly);
+    auto rowIndex = ui->tblError->row(items[0]);
+    QString str = static_cast<bool>(value) ? "Error" : "Ok";
+    ui->tblError->item(rowIndex, 1)->setText(QString(str));
+}
+
 void MainWindow::updateDetailTables(SPL::Packet &packet)
 {
     const auto &allInfo = SPL::getInfo();
-    auto tblError = this->ui->tblError;
-    auto tblValue = this->ui->tblValue;
     auto allErrors = SPL::allErrorCodes();
     auto allDataCodes = SPL::allDataCodes();
+
+    // loop through all of data in the received packet
     foreach (const auto &packetData, packet.getAllPackets()) {
         auto id = packetData.getId();
         auto value = packetData.getValue();
         auto name = allInfo[id].name;
+
+        // if the data is an error, update tblError
+        // otherwise update tblValue
         if (allErrors.contains(static_cast<SPL::DataID>(id))) {
-            auto items = tblError->findItems(name, Qt::MatchExactly);
-            auto rowIndex = tblError->row(items[0]);
-            QString str = static_cast<bool>(value) ? "Error" : "Ok";
-            tblError->item(rowIndex, 1)->setText(QString(str));
+            updateErrorTable(name, value);
         } else if (allDataCodes.contains(static_cast<SPL::DataID>(id))) {
-            auto items = tblValue->findItems(name, Qt::MatchExactly);
-            auto rowIndex = tblValue->row(items[0]);
-            tblValue->item(rowIndex, 1)->setText(QString::number(value));
+            updateValueTable(name, value);
         }
     }
 }
@@ -117,6 +149,10 @@ void MainWindow::updateMainIndicators(SPL::Packet &packet)
     using ids = SPL::DataID;
     auto allErrors = SPL::allErrorCodes();
     this->ui->ledLast->setState(false);
+
+    // loop through all data in the packet
+    // if it contains an error, update LEDs
+    // if it contains a value shown in gauge widgets, update the widget
     foreach (const auto &packetData, packet.getAllPackets()) {
         auto id = packetData.getId();
         auto idEnum = static_cast<ids>(id);
@@ -133,13 +169,17 @@ void MainWindow::updateMainIndicators(SPL::Packet &packet)
 
 void MainWindow::resetUI()
 {
+    // reset tables, set the 2nd column to Nan
     for (int i = 0; i < this->ui->tblError->rowCount(); i++)
         this->ui->tblError->item(i, 1)->setText("NaN");
     for (int i = 0; i < this->ui->tblValue->rowCount(); i++)
         this->ui->tblValue->item(i, 1)->setText("NaN");
+
+    // reset all gauge widgets
     foreach (auto ptr, this->gauges) {
         ptr->setValue(0);
     }
+    // reset LEDs
     this->ui->ledAll->setState(false);
     this->ui->ledLast->setState(false);
 }
@@ -156,6 +196,8 @@ void MainWindow::startSerial()
     Parser::getInstance().reset();
     resetUI();
     bool result;
+
+    // try to open a new connection
     try {
         result = SerialController::getInstance().connect();
     } catch (EmptyPortName &) {
@@ -163,6 +205,8 @@ void MainWindow::startSerial()
         return;
     }
     if (result) {
+        // if connection was opened, disable menubar items
+        // user should not temper serial config ordata while connected
         this->ui->actionOpen_Config->setDisabled(true);
         this->ui->actionStart->setDisabled(true);
         this->ui->actionSave_into_Excel->setDisabled(true);
@@ -177,6 +221,7 @@ void MainWindow::startSerial()
 
 void MainWindow::stopSerial()
 {
+    // enable menubar items
     this->ui->actionOpen_Config->setDisabled(false);
     this->ui->actionStart->setDisabled(false);
     this->ui->actionSave_into_Excel->setDisabled(false);
@@ -186,6 +231,8 @@ void MainWindow::stopSerial()
 
 void MainWindow::saveExcel()
 {
+    // try to save data in excel
+    // if storage is empty or export process fails, show an error
     bool saved = false;
     try {
         ExcelHelper saver;

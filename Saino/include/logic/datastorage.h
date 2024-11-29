@@ -7,6 +7,7 @@
 #include <QVector>
 #include <SPL/packet.h>
 
+// singleton class used for storing all packets in a connection
 class DataStorage : public QObject
 {
     Q_OBJECT
@@ -19,6 +20,7 @@ class DataStorage : public QObject
 public:
     static DataStorage &getInstance();
     const QList<SPL::Packet> &getPackets();
+    // empty the storage, used on new serial connection
     void reset();
 public slots:
     void newPacket(SPL::Packet packet);

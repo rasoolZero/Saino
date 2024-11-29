@@ -6,6 +6,8 @@ Config::Config(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Config)
 {
+    // setting up configuration form
+    // get available options from SerialManager
     ui->setupUi(this);
     foreach (auto &port, SerialManager::getPorts()) {
         ui->cmbPorts->addItem(port.portName());
@@ -19,6 +21,8 @@ Config::Config(QWidget *parent)
     foreach (auto &stopbit, SerialManager::getStopbits()) {
         ui->cmbStopbits->addItem(QtEnumToString(stopbit), stopbit);
     }
+
+    // set combo current texts to current options
     ui->cmbParity->setCurrentText(QtEnumToString(SerialManager::getInstance().getParity()));
     ui->cmbRates->setCurrentText(QString::number(SerialManager::getInstance().getRate()));
     ui->cmbStopbits->setCurrentText(QtEnumToString(SerialManager::getInstance().getStopbit()));
@@ -34,6 +38,7 @@ Config::~Config()
 
 void Config::onAccept()
 {
+    // set form's chosen options in manager
     SerialManager::getInstance().setPort(ui->cmbPorts->currentText());
     SerialManager::getInstance().setParity(
         ui->cmbParity->currentData().value<SerialManager::Parity>());

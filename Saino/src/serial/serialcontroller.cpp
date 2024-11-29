@@ -9,6 +9,7 @@ SerialController::SerialController(QObject *parent)
     , port{QSharedPointer<QSerialPort>::create(this)}
     , reader{port}
 {
+    // connect and move reader worker to reader thread
     QObject::connect(&readerThread, SIGNAL(started()), &reader, SLOT(process()));
     reader.moveToThread(&readerThread);
 }
@@ -33,6 +34,7 @@ bool SerialController::connect()
     if (manager.getPort() == "") {
         EmptyPortName().raise();
     }
+    // try to open a new connection based on user's configuration in SerialManager
     port->close();
     port->setBaudRate(manager.getRate());
     port->setPortName(manager.getPort());
@@ -47,6 +49,7 @@ bool SerialController::connect()
 bool SerialController::disconnect()
 {
     if (port->isOpen()) {
+        // first lock the reader so that it doesn't wain on data ready
         reader.lock();
         port->close();
         reader.unlock();

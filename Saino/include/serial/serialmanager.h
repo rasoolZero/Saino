@@ -7,6 +7,8 @@
 #include <QSerialPortInfo>
 #include <QSharedPointer>
 
+// singleton class, saves the configuration of serial port
+// the configuration is set by user using the config dialog form
 class SerialManager : public QObject
 {
 public:
@@ -17,6 +19,7 @@ public:
 private:
     Q_OBJECT
 
+    // default configuration based on documentations
     Parity parity = Parity::OddParity;
     StopBits stopbit = StopBits::OneStop;
     qint32 rate = BaudRate::Baud115200;
@@ -31,6 +34,8 @@ private:
 
 public:
     static SerialManager &getInstance();
+
+    // these methods are used to get the available configuraiton from QSerialPortInfo
     static QList<QSerialPortInfo> getPorts();
     static QList<qint32> getBaudRates();
     static const QList<Parity> &getParities();
@@ -39,6 +44,7 @@ public:
     Parity getParity() const;
     void setParity(const Parity &newParity);
 
+    QString getPort() const;
     void setPort(const QString &newPort);
 
     StopBits getStopbit() const;
@@ -46,8 +52,6 @@ public:
 
     qint32 getRate() const;
     void setRate(qint32 newRate);
-
-    QString getPort() const;
 
 signals:
 

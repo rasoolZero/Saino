@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QResizeEvent>
 
+// LED indicator with 2 states: ok (green) and error (red)
 class LED : public QWidget
 {
     Q_OBJECT
@@ -16,6 +17,7 @@ signals:
 
 public slots:
     void setState(State state);
+    // true means error, false means ok
     void setState(bool state);
 
     // QWidget interface

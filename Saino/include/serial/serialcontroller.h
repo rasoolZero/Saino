@@ -17,10 +17,14 @@ public:
     QException *clone() const override { return new EmptyPortName(*this); }
 };
 
+// worker class used in SerialController
+// reads and sends received data on a separate thread
 class PortReader : public QObject
 {
     Q_OBJECT
     const QSharedPointer<QSerialPort> port;
+
+    // mutex for safety on port opening and closing
     QMutex mLock;
 
 public:
@@ -32,6 +36,7 @@ public slots:
     void process();
 };
 
+// singleton class, handles multithreaded serial connection
 class SerialController : public QObject
 {
     Q_OBJECT
@@ -50,6 +55,7 @@ public:
     static SerialController &getInstance();
     ~SerialController();
 
+    // throws EmptyPortName if no port has been selected
     bool connect();
     bool disconnect();
     QString error();

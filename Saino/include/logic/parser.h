@@ -6,6 +6,7 @@
 #include <SPL/packet.h>
 #include <SPL/parser.h>
 
+// singleton class for parser
 class Parser : public SPL::Parser
 {
     Q_OBJECT

@@ -32,13 +32,23 @@ private:
     void setupTables();
     void updateDetailTables(SPL::Packet &packet);
     void updateMainIndicators(SPL::Packet &packet);
+    // resets UI, used when a new serial connection is opened
     void resetUI();
     QMap<int, CustomGauge *> gauges;
+
+    // list of data IDs showen with gauge widgets
     const QVector<ids> gaugeIDs = {ids::OIL_PRESSURE,
                                    ids::OIL_TEMPERATURE,
                                    ids::FUEL,
                                    ids::TORQUE,
                                    ids::MOTOR_SPEED};
+
+    void updateValueTable(QString name, qreal value);
+    void updateErrorTable(QString name, qreal value);
+
+    void setupErrorTable();
+
+    void setupValueTable();
 
 private slots:
     void openConfig();
