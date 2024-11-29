@@ -26,6 +26,7 @@ void SPL::Packet::evaluatePacketData(const QByteArray &bytes)
     idN = bytes.at(header.size() + sizeof(msgcounter_t));
     const QByteArray allData = bytes.mid(header.size() + sizeof(msgcounter_t) + sizeof(idnumber_t),
                                          idN * packetDataSize);
+    qDebug() << "msg counter:" << msgCounter;
     for (qsizetype i = 0; i < idN * packetDataSize; i += packetDataSize) {
         auto onePacketData = allData.mid(i, packetDataSize);
         id_t id = byteArrayConvert<id_t>(onePacketData.mid(0, sizeof(id_t)));

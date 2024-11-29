@@ -21,8 +21,8 @@ void SPL::Parser::parseData(QByteArray data)
     if (totalBytes.size() < minimumSize)
         return;
     auto headerIndex = totalBytes.indexOf(header);
-
     while (headerIndex != -1) {
+        bool packetFound = false;
         auto msgCounterIndex = headerIndex + header.size();
         msgcounter_t newMsgCounter = totalBytes[msgCounterIndex];
         if (!isMsgcounterValid(newMsgCounter)) {
@@ -43,8 +43,9 @@ void SPL::Parser::parseData(QByteArray data)
                 try {
                     Packet packet(packetData);
                     emit packetGenerated(packet);
-                    totalBytes.remove(0, footerIndex + 1);
+                    totalBytes.remove(0, footerIndex);
                     msgCounter = newMsgCounter + 1;
+                    packetFound = true;
                 } catch (const BadChecksum &) {
                     qDebug() << "Bad Checksum";
                 }
@@ -53,8 +54,10 @@ void SPL::Parser::parseData(QByteArray data)
             }
             footerIndex = totalBytes.indexOf(footer, footerIndex + 1);
         }
-
-        headerIndex = totalBytes.indexOf(header, headerIndex + 1);
+        if (packetFound)
+            headerIndex = totalBytes.indexOf(header);
+        else
+            headerIndex = totalBytes.indexOf(header, headerIndex + 1);
     }
 }
 
@@ -69,6 +72,8 @@ SPL::Parser::Parser(QObject *parent)
 bool SPL::Parser::isMsgcounterValid(msgcounter_t newMsgCounter)
 {
     const auto maxMsgCounter = std::numeric_limits<msgcounter_t>::max();
+    qDebug() << "msgcounter thershold:" << maxMsgCounter * (3.f / 4.f);
+    qDebug() << "msgcounter thershold:" << maxMsgCounter * (1.f / 4.f);
     return newMsgCounter >= this->msgCounter
            || (this->msgCounter >= maxMsgCounter * (3.f / 4.f)
                && newMsgCounter <= maxMsgCounter * (1.f / 4.f));
