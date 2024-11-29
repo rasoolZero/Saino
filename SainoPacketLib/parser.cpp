@@ -80,8 +80,9 @@ void SPL::Parser::parseData(const QByteArray &data)
     }
 }
 
-SPL::Parser::Parser(QObject *parent)
+SPL::Parser::Parser(QObject *parent, qsizetype maxSize)
     : QObject(parent)
+    , maxSize(maxSize)
 {
     this->msgCounter = 0;
     this->totalBytes.clear();

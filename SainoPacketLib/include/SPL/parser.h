@@ -15,10 +15,10 @@ class Parser : public QObject
 
     msgcounter_t msgCounter = 0;
     QByteArray totalBytes;
-    const qsizetype maxSize = 20000;
+    const qsizetype maxSize;
 
 public:
-    explicit Parser(QObject *parent = nullptr);
+    explicit Parser(QObject *parent = nullptr, qsizetype maxSize = 20000);
     // sets msgCounter to 0 and clears totalBytes
     void reset();
     void parseData(const QByteArray &data);
